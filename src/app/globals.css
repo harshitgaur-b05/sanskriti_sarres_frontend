@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #fff8f4;
+  --color-surface-dim: #e1d8d2;
+  --color-surface-bright: #fff8f4;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #fbf2eb;
+  --color-surface-container: #f5ece5;
+  --color-surface-container-high: #f0e7df;
+  --color-surface-container-highest: #eae1da;
+  --color-on-surface: #1f1b17;
+  --color-on-surface-variant: #444748;
+  --color-outline: #747878;
+  --color-outline-variant: #c4c7c7;
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-tertiary-container: #410004;
+  --color-on-tertiary-container: #d95b56;
+  --color-background: #fff8f4;
+  --color-on-background: #1f1b17;
+
+  --spacing-section-gap: 120px;
+  --spacing-margin-mobile: 20px;
+  --spacing-unit: 8px;
+  --spacing-container-max: 1440px;
+  --spacing-margin-desktop: 80px;
+  --spacing-gutter: 24px;
+
+  --font-title-lg: var(--font-montserrat);
+  --font-display-lg: var(--font-playfair);
+  --font-caption: var(--font-montserrat);
+  --font-headline-lg-mobile: var(--font-playfair);
+  --font-body-md: var(--font-montserrat);
+  --font-display-md: var(--font-playfair);
+  --font-headline-md: var(--font-playfair);
+  --font-headline-lg: var(--font-playfair);
+  --font-label-md: var(--font-montserrat);
+  --font-body-lg: var(--font-montserrat);
+
+  --text-title-lg: 20px;
+  --text-title-lg--line-height: 28px;
+  
+  --text-display-lg: 84px;
+  --text-display-lg--line-height: 92px;
+  
+  --text-caption: 11px;
+  --text-caption--line-height: 14px;
+  
+  --text-headline-lg-mobile: 32px;
+  --text-headline-lg-mobile--line-height: 40px;
+  
+  --text-body-md: 16px;
+  --text-body-md--line-height: 26px;
+  
+  --text-display-md: 64px;
+  --text-display-md--line-height: 72px;
+  
+  --text-headline-md: 32px;
+  --text-headline-md--line-height: 40px;
+  
+  --text-headline-lg: 48px;
+  --text-headline-lg--line-height: 56px;
+  
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+  
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 32px;
+}
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-background);
+    color: var(--color-on-background);
+  }
+  body {
+    overscroll-behavior: none;
+  }
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  /* Utilities for typography tracking & weight since v4 maps these differently */
+  .text-display-lg { letter-spacing: -0.02em; font-weight: 400; }
+  .text-display-md { letter-spacing: -0.01em; font-weight: 400; }
+  .text-headline-lg { font-weight: 400; }
+  .text-headline-md { font-weight: 400; }
+  .text-title-lg { letter-spacing: 0.05em; font-weight: 500; }
+  .text-body-lg { font-weight: 300; }
+  .text-body-md { font-weight: 400; }
+  .text-label-md { letter-spacing: 0.1em; font-weight: 600; }
+  .text-caption { font-weight: 400; }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
