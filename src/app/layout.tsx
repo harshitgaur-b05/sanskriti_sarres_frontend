@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -15,7 +13,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Sankriti Sarees Mill | Heritage Editorial",
+  title: "Sanskriti Sarees Mill | Heritage Editorial",
   description: "Archival heritage meets modern drape. Discover curated timeless silhouettes.",
 };
 
@@ -32,10 +30,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col font-body-md bg-background text-on-background">
-        <Navbar />
-        <main className="flex-1 flex flex-col">{children}</main>
-        <Footer />
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-body-md bg-background text-on-background">
+        {children}
       </body>
     </html>
   );

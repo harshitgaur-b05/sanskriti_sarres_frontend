@@ -1,17 +1,68 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { priceCategories, mockProducts } from "@/lib/mockData";
+import { useCart } from "@/lib/CartContext";
+
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  image?: string;
+  category: string;
+  isBestSeller?: boolean;
+}
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [heroImage, setHeroImage] = useState<string>("/screen.png");
+  const { addToCart } = useCart();
+
+  useEffect(() => {
+    // Fetch dynamic products from MongoDB backend
+    fetch(`${BACKEND_URL}/api/products`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (data && data.length > 0) {
+          setProducts(data);
+        }
+      })
+      .catch((err) => console.log("Backend offline or error", err));
+
+    // Fetch dynamic hero image from MongoDB backend
+    fetch(`${BACKEND_URL}/api/admin/hero`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.imageUrl) {
+          setHeroImage(data.imageUrl);
+        }
+      })
+      .catch((err) => console.log("Hero config error", err));
+  }, []);
+
+  // Filter best seller products or fallback to initial ones
+  const displayProducts =
+    products.length > 0
+      ? products.filter((p) => p.isBestSeller).length > 0
+        ? products.filter((p) => p.isBestSeller).slice(0, 8)
+        : products.slice(0, 8)
+      : mockProducts.slice(0, 4);
+
   return (
     <>
       {/* Hero Section */}
       <section className="relative w-full overflow-hidden bg-surface-container-highest">
         <div className="relative min-h-[85vh] lg:min-h-[720px] flex flex-col justify-end lg:justify-center items-center lg:items-start">
           <div className="absolute inset-0 w-full h-full">
-            <img 
-              alt="Modern Indian bride in a royal maroon and gold Banarasi handwoven silk saree" 
-              className="w-full h-full object-cover object-center transform scale-105 duration-1000 transition-transform hover:scale-100" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9FVxUi3Y1nNNs7H1Zt5zeaeoiALg-NVh2_3FvcpTH0uNI8fQOaYB2oST_mOrBCGriC7cG55OxjO3tme1FTlm9pKCzlQ3vdh6LYAi1TakRJB8He2BXR7puhv8r18KQI8K5JvVDSJ4i11kEo49iNugV8gcLxIc7Ix8s6MNRyZvWwAWHGDFD7HuaevyAr7W1CTtvHnDAVTDWyjB6ppmAB-ZNrc1lSaORB9KWPP8Fwv2jwUNClNjy2WGs8g"
+            <img
+              alt="Bride wearing a handwoven pure silk Sanskriti saree"
+              className="w-full h-full object-cover object-top transform scale-105 duration-1000 transition-transform hover:scale-100"
+              src={heroImage}
             />
             <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-surface-container-lowest/95 via-surface-container/70 to-transparent lg:w-3/5"></div>
           </div>
@@ -28,12 +79,18 @@ export default function Home() {
                 Where archival heritage meets the modern drape. A curation of timeless silhouettes woven for generations.
               </p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 mb-4 lg:mb-12">
-                <Link 
-                  href="/products" 
+                <Link
+                  href="/products"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-on-primary font-label-md text-xs uppercase tracking-[0.15em] hover:bg-tertiary-container transition-all duration-300 shadow-md hover:shadow-xl w-full sm:w-auto"
                 >
                   Explore Archives
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+                <Link
+                  href="/admin"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-xs uppercase tracking-[0.15em] hover:bg-surface-container transition-all duration-300 shadow-sm w-full sm:w-auto"
+                >
+                  Admin Portal
                 </Link>
               </div>
             </div>
@@ -50,19 +107,19 @@ export default function Home() {
               Accessible handloom elegance to generational museum-grade heirlooms. Explore our authentic handwoven edits grouped by budget.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-6">
             {priceCategories.map((cat) => (
-              <Link 
-                key={cat.id} 
+              <Link
+                key={cat.id}
                 href="/products"
                 className="group flex flex-col bg-surface-container-lowest p-2 md:p-3 rounded-md shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="aspect-square overflow-hidden mb-3 bg-surface-container rounded-sm">
-                  <img 
-                    src={cat.image} 
-                    alt={cat.label} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                  <img
+                    src={cat.image}
+                    alt={cat.label}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
                 <div className="text-center md:text-left">
@@ -90,24 +147,54 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {mockProducts.slice(0, 4).map((product) => (
-              <div key={product.id} className="group bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-                <div className="relative aspect-[4/5] overflow-hidden bg-surface-container">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                    <span className="bg-primary text-on-primary px-2.5 py-1 text-[9px] md:text-[10px] font-label-md uppercase tracking-wider rounded-sm font-semibold">{product.tags[0]}</span>
+            {displayProducts.map((product) => {
+              const pid = (product as any)._id || product.id;
+              return (
+                <div key={pid} className="group bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+                  <div className="relative aspect-[4/5] overflow-hidden bg-surface-container">
+                    <img
+                      src={product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800"}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                      <span className="bg-primary text-on-primary px-2.5 py-1 text-[9px] md:text-[10px] font-label-md uppercase tracking-wider rounded-sm font-semibold">
+                        {product.category}
+                      </span>
+                    </div>
+                    {(product as any).isBestSeller && (
+                      <div className="absolute top-3 right-3 bg-amber-600 text-white px-2 py-0.5 text-[10px] font-bold rounded">
+                        BEST SELLER
+                      </div>
+                    )}
+                    {/* Quick add on hover */}
+                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-3">
+                      <button
+                        onClick={() =>
+                          addToCart({
+                            id: pid,
+                            name: product.name,
+                            price: Number(product.price),
+                            image: product.image,
+                            category: product.category,
+                          })
+                        }
+                        className="w-full py-2 bg-primary text-on-primary text-xs font-label-md uppercase tracking-widest rounded-sm shadow-lg hover:bg-tertiary-container transition-colors"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                  <div className="p-4 md:p-5 flex flex-col flex-1 text-center">
+                    <span className="text-[9px] md:text-[11px] font-caption text-on-surface-variant uppercase tracking-widest mb-1">{product.category}</span>
+                    <h3 className="font-headline-md text-base md:text-lg text-on-surface mb-2 line-clamp-1">{product.name}</h3>
+                    <div className="flex items-center justify-center gap-2 mt-auto">
+                      <span className="font-body-md text-sm md:text-base font-semibold text-on-surface">₹{product.price.toLocaleString("en-IN")}</span>
+                    </div>
                   </div>
                 </div>
-                <div className="p-4 md:p-5 flex flex-col flex-1 text-center">
-                  <span className="text-[9px] md:text-[11px] font-caption text-on-surface-variant uppercase tracking-widest mb-1">{product.category}</span>
-                  <h3 className="font-headline-md text-base md:text-lg text-on-surface mb-2 line-clamp-1">{product.name}</h3>
-                  <div className="flex items-center justify-center gap-2 mt-auto">
-                    <span className="font-body-md text-sm md:text-base font-semibold text-on-surface">₹{product.price.toLocaleString()}</span>
-                    {product.originalPrice && <span className="font-body-md text-xs text-on-surface-variant line-through">₹{product.originalPrice.toLocaleString()}</span>}
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -118,14 +205,14 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             <div className="lg:col-span-7 relative order-2 lg:order-1">
               <div className="rounded-xl overflow-hidden shadow-xl bg-surface-container">
-                <img alt="Editorial bride showcasing Sankriti bespoke wedding collection saree" className="w-full h-auto object-cover aspect-[4/3] lg:aspect-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9FVxUi3Y1nNNs7H1Zt5zeaeoiALg-NVh2_3FvcpTH0uNI8fQOaYB2oST_mOrBCGriC7cG55OxjO3tme1FTlm9pKCzlQ3vdh6LYAi1TakRJB8He2BXR7puhv8r18KQI8K5JvVDSJ4i11kEo49iNugV8gcLxIc7Ix8s6MNRyZvWwAWHGDFD7HuaevyAr7W1CTtvHnDAVTDWyjB6ppmAB-ZNrc1lSaORB9KWPP8Fwv2jwUNClNjy2WGs8g"/>
+                <img alt="Editorial bride showcasing Sankriti bespoke wedding collection saree" className="w-full h-auto object-cover aspect-[4/3] lg:aspect-auto" src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1200"/>
               </div>
               <div className="absolute -bottom-4 right-4 md:-bottom-6 md:-right-4 lg:right-8 bg-surface-container-lowest p-4 md:p-6 rounded-lg shadow-xl max-w-[240px] md:max-w-xs border border-surface-container">
                 <span className="font-label-md text-[8px] md:text-[10px] uppercase tracking-widest text-on-surface-variant block mb-1">Couture Service</span>
                 <p className="font-headline-md text-sm md:text-base text-on-surface leading-tight">"The Muhurtham drape made my wedding feel like an archival royal portrait."</p>
               </div>
             </div>
-            
+
             <div className="lg:col-span-5 lg:pl-6 order-1 lg:order-2 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full mb-4">
                 <span className="material-symbols-outlined text-sm text-tertiary-container">favorite</span>
@@ -137,7 +224,7 @@ export default function Home() {
               <p className="font-body-md text-sm md:text-body-md text-on-surface-variant mb-8 leading-relaxed">
                 From sunrise Muhurtham ceremonies wrapped in heavy pure gold zari Kanjeevarams to evening Receptions glowing under champagne Banarasi Kadhuwas. We curate your multi-day bridal wardrobe directly with hereditary weavers.
               </p>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-left">
                 <div className="bg-surface-container-low p-4 rounded-md">
                   <span className="font-headline-md text-sm md:text-base text-on-surface block mb-1">Muhurtham</span>
@@ -148,7 +235,7 @@ export default function Home() {
                   <p className="font-caption text-xs text-on-surface-variant">Regal Kadhuwa Banarasis with antique zari bootas</p>
                 </div>
               </div>
-              
+
               <Link href="/products" className="inline-flex items-center justify-center px-8 py-3 bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest hover:bg-tertiary-container transition-colors shadow-md w-full sm:w-auto">
                 Explore Bridal Silks
               </Link>
@@ -182,7 +269,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       {/* All Products Bottom CTA */}
       <section className="py-16 md:py-24 bg-primary text-on-primary text-center px-margin-mobile md:px-margin-desktop">
         <div className="max-w-2xl mx-auto">
