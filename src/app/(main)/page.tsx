@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { priceCategories, mockProducts } from "@/lib/mockData";
 import { useCart } from "@/lib/CartContext";
+import HeroCarousel from "@/components/HeroCarousel";
 
 interface Product {
   id: string;
@@ -20,7 +21,8 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:500
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [heroImage, setHeroImage] = useState<string>("/screen.png");
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroInterval, setHeroInterval] = useState<number>(4000);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -34,12 +36,21 @@ export default function Home() {
       })
       .catch((err) => console.log("Backend offline or error", err));
 
-    // Fetch dynamic hero image from MongoDB backend
+    // Fetch dynamic hero carousel config from MongoDB backend
     fetch(`${BACKEND_URL}/api/admin/hero`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data && data.imageUrl) {
-          setHeroImage(data.imageUrl);
+        if (data) {
+          if (Array.isArray(data.images) && data.images.length > 0) {
+            setHeroImages(data.images);
+          } else if (Array.isArray(data.imageUrls) && data.imageUrls.length > 0) {
+            setHeroImages(data.imageUrls);
+          } else if (data.imageUrl) {
+            setHeroImages([data.imageUrl]);
+          }
+          if (typeof data.interval === "number") {
+            setHeroInterval(data.interval);
+          }
         }
       })
       .catch((err) => console.log("Hero config error", err));
@@ -55,48 +66,8 @@ export default function Home() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative w-full overflow-hidden bg-surface-container-highest">
-        <div className="relative min-h-[85vh] lg:min-h-[720px] flex flex-col justify-end lg:justify-center items-center lg:items-start">
-          <div className="absolute inset-0 w-full h-full">
-            <img
-              alt="Bride wearing a handwoven pure silk Sanskriti saree"
-              className="w-full h-full object-cover object-top transform scale-105 duration-1000 transition-transform hover:scale-100"
-              src={heroImage}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-surface-container-lowest/95 via-surface-container/70 to-transparent lg:w-3/5"></div>
-          </div>
-          <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full py-16 lg:py-24 text-center lg:text-left">
-            <div className="max-w-xl mx-auto lg:mx-0">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-lowest/95 backdrop-blur-sm rounded-full mb-6 shadow-sm">
-                <span className="font-label-md text-[9px] md:text-[11px] uppercase tracking-[0.2em] text-on-surface">New Collection</span>
-              </div>
-              <h1 className="font-headline-lg lg:font-display-md text-headline-lg-mobile md:text-headline-lg lg:text-display-md text-on-surface mb-6 leading-none">
-                Threads of <br className="hidden lg:block"/>
-                <span className="font-display-md font-light lg:ml-2">India</span>
-              </h1>
-              <p className="font-body-md md:font-body-lg text-sm md:text-body-lg text-on-surface-variant mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                Where archival heritage meets the modern drape. A curation of timeless silhouettes woven for generations.
-              </p>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 mb-4 lg:mb-12">
-                <Link
-                  href="/products"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-on-primary font-label-md text-xs uppercase tracking-[0.15em] hover:bg-tertiary-container transition-all duration-300 shadow-md hover:shadow-xl w-full sm:w-auto"
-                >
-                  Explore Archives
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </Link>
-                <Link
-                  href="/admin"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-xs uppercase tracking-[0.15em] hover:bg-surface-container transition-all duration-300 shadow-sm w-full sm:w-auto"
-                >
-                  Admin Portal
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Dynamic Auto-Scrolling Hero Carousel */}
+      <HeroCarousel images={heroImages} interval={heroInterval} />
 
       {/* Shop by Price Section */}
       <section className="py-12 md:py-16 lg:py-24 bg-surface px-margin-mobile md:px-margin-desktop" id="shop-by-price">

@@ -1,6 +1,6 @@
 "use client";
 
-export type AdminTab = "all-products" | "add-product" | "hero" | "blogs";
+export type AdminTab = "all-products" | "add-product" | "hero" | "blogs" | "orders";
 
 interface Props {
   activeTab: AdminTab;
@@ -8,6 +8,7 @@ interface Props {
   onLogout: () => void;
   onSeedProducts: () => void;
   productCount: number;
+  orderCount?: number;
 }
 
 export default function AdminSidebar({
@@ -16,6 +17,7 @@ export default function AdminSidebar({
   onLogout,
   onSeedProducts,
   productCount,
+  orderCount = 0,
 }: Props) {
   const navItem = (tab: AdminTab, icon: React.ReactNode, label: string, badge?: number) => (
     <button
@@ -55,6 +57,14 @@ export default function AdminSidebar({
         </div>
 
         <nav className="space-y-2">
+          {navItem(
+            "orders",
+            <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>,
+            "Customer Orders",
+            orderCount
+          )}
           {navItem(
             "all-products",
             <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

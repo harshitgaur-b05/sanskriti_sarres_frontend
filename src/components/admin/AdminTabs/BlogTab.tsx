@@ -20,6 +20,7 @@ interface Props {
 }
 
 export default function BlogTab({ blogs, onRefresh, showToast }: Props) {
+  const [isUploading, setIsUploading] = useState(false);
   const [form, setForm] = useState({ title: "", content: "", image: "" });
 
   const set = (key: string, value: string) =>
@@ -91,15 +92,74 @@ export default function BlogTab({ blogs, onRefresh, showToast }: Props) {
 
         <div>
           <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-2">
-            Cover Image URL
+            Cover Image (URL or Cloudinary Upload)
           </label>
-          <input
-            type="text"
-            placeholder="https://images.unsplash.com/..."
-            value={form.image}
-            onChange={(e) => set("image", e.target.value)}
-            className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
-          />
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <input
+              type="text"
+              placeholder="https://images.unsplash.com/..."
+              value={form.image}
+              onChange={(e) => set("image", e.target.value)}
+              className="flex-1 bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+            />
+            <label
+              htmlFor="blog-image-upload"
+              className="px-4 py-3 bg-neutral-800 hover:bg-neutral-700 text-amber-400 border border-amber-500/20 text-xs rounded-xl font-semibold cursor-pointer transition-colors flex items-center justify-center gap-2 shrink-0"
+            >
+              <span className="material-symbols-outlined text-base">cloud_upload</span>
+              {isUploading ? "Uploading..." : "Upload to Cloudinary"}
+            </label>
+            <input
+              id="blog-image-upload"
+              type="file"
+              accept="image/*"
+              disabled={isUploading}
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setIsUploading(true);
+                showToast("Uploading blog cover to Cloudinary...", "success");
+                try {
+                  const base64Data = await new Promise<string>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result as string);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                  });
+                  const res = await fetch(`${BACKEND_URL}/api/upload`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ image: base64Data, folder: "sanskriti_blogs" }),
+                  });
+                  if (res.ok) {
+                    const data = await res.json();
+                    if (data.url) {
+                      set("image", data.url);
+                      showToast("Uploaded to Cloudinary successfully!");
+                    }
+                  } else {
+                    showToast("Failed to upload image to Cloudinary", "error");
+                  }
+                } catch (err) {
+                  console.error(err);
+                  showToast("Cloudinary upload failed", "error");
+                } finally {
+                  setIsUploading(false);
+                  e.target.value = "";
+                }
+              }}
+            />
+          </div>
+          {form.image && (
+            <div className="mt-3 flex items-center gap-3 bg-neutral-950 p-2 rounded-xl border border-neutral-800">
+              <img src={form.image} alt="Blog Preview" className="w-12 h-12 object-cover rounded-lg border border-neutral-800" />
+              <div className="min-w-0 flex-1">
+                <span className="text-[10px] text-amber-400 font-semibold uppercase tracking-wider block">Cover Attached</span>
+                <p className="text-xs text-neutral-400 truncate">{form.image}</p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>

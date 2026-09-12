@@ -71,6 +71,7 @@ const SAREE_COLORS = [
 
 function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditModalProps) {
   const getId = (p: Product) => p._id || p.id;
+  const [isUploading, setIsUploading] = useState(false);
 
   const [form, setForm] = useState({
     name: product.name,
@@ -221,12 +222,71 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
 
           {/* Image */}
           <div>
-            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Image URL</label>
-            <input
-              value={form.image}
-              onChange={(e) => set("image", e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
-            />
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+              Image (URL or Cloudinary Upload)
+            </label>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <input
+                value={form.image}
+                onChange={(e) => set("image", e.target.value)}
+                placeholder="https://images.unsplash.com/..."
+                className="flex-1 bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+              <label
+                htmlFor="edit-product-image-upload"
+                className="px-4 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-amber-400 border border-amber-500/20 text-xs rounded-xl font-semibold cursor-pointer transition-colors flex items-center justify-center gap-1.5 shrink-0"
+              >
+                <span className="material-symbols-outlined text-sm">cloud_upload</span>
+                {isUploading ? "Uploading..." : "Cloudinary Upload"}
+              </label>
+              <input
+                id="edit-product-image-upload"
+                type="file"
+                accept="image/*"
+                disabled={isUploading}
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setIsUploading(true);
+                  showToast("Uploading product image to Cloudinary...", "success");
+                  try {
+                    const base64Data = await new Promise<string>((resolve, reject) => {
+                      const reader = new FileReader();
+                      reader.onload = () => resolve(reader.result as string);
+                      reader.onerror = reject;
+                      reader.readAsDataURL(file);
+                    });
+                    const res = await fetch(`${BACKEND_URL}/api/upload`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ image: base64Data, folder: "sanskriti_products" }),
+                    });
+                    if (res.ok) {
+                      const data = await res.json();
+                      if (data.url) {
+                        set("image", data.url);
+                        showToast("Uploaded to Cloudinary successfully!");
+                      }
+                    } else {
+                      showToast("Failed to upload image to Cloudinary", "error");
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    showToast("Cloudinary upload failed", "error");
+                  } finally {
+                    setIsUploading(false);
+                    e.target.value = "";
+                  }
+                }}
+              />
+            </div>
+            {form.image && (
+              <div className="mt-2 flex items-center gap-2 bg-neutral-950 p-2 rounded-lg border border-neutral-800">
+                <img src={form.image} alt="Preview" className="w-10 h-10 object-cover rounded-md border border-neutral-800" />
+                <span className="text-xs text-neutral-400 truncate">{form.image}</span>
+              </div>
+            )}
           </div>
 
           {/* Description */}

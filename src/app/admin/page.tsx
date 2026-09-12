@@ -7,6 +7,7 @@ import ProductsTab, { Product } from "@/components/admin/AdminTabs/ProductsTab";
 import AddProductTab from "@/components/admin/AdminTabs/AddProductTab";
 import HeroTab from "@/components/admin/AdminTabs/HeroTab";
 import BlogTab, { Blog } from "@/components/admin/AdminTabs/BlogTab";
+import OrdersTab, { CustomerOrder } from "@/components/admin/AdminTabs/OrdersTab";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
@@ -15,12 +16,16 @@ type Toast = { message: string; type: "success" | "error" };
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [activeTab, setActiveTab] = useState<AdminTab>("all-products");
+  const [activeTab, setActiveTab] = useState<AdminTab>("orders");
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [heroImage, setHeroImage] = useState("");
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroInterval, setHeroInterval] = useState(4000);
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [orders, setOrders] = useState<CustomerOrder[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
 
   const [toast, setToast] = useState<Toast | null>(null);
 
@@ -74,6 +79,14 @@ export default function AdminPage() {
       if (res.ok) {
         const data = await res.json();
         setHeroImage(data.imageUrl || "");
+        if (Array.isArray(data.images)) {
+          setHeroImages(data.images);
+        } else if (Array.isArray(data.imageUrls)) {
+          setHeroImages(data.imageUrls);
+        }
+        if (typeof data.interval === "number") {
+          setHeroInterval(data.interval);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -89,13 +102,26 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchOrders = useCallback(async () => {
+    setLoadingOrders(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/orders`);
+      if (res.ok) setOrders(await res.json());
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingOrders(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchProducts();
       fetchHero();
       fetchBlogs();
+      fetchOrders();
     }
-  }, [isAuthenticated, fetchProducts, fetchHero, fetchBlogs]);
+  }, [isAuthenticated, fetchProducts, fetchHero, fetchBlogs, fetchOrders]);
 
   // ── Seed ──────────────────────────────────────────────
   const handleSeedProducts = async () => {
@@ -139,9 +165,19 @@ export default function AdminPage() {
         onLogout={handleLogout}
         onSeedProducts={handleSeedProducts}
         productCount={products.length}
+        orderCount={orders.length}
       />
 
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+        {activeTab === "orders" && (
+          <OrdersTab
+            orders={orders}
+            loading={loadingOrders}
+            onRefresh={fetchOrders}
+            showToast={showToast}
+          />
+        )}
+
         {activeTab === "all-products" && (
           <ProductsTab
             products={products}
@@ -164,7 +200,13 @@ export default function AdminPage() {
         )}
 
         {activeTab === "hero" && (
-          <HeroTab initialImageUrl={heroImage} showToast={showToast} />
+          <HeroTab
+            initialImageUrl={heroImage}
+            initialImages={heroImages}
+            initialInterval={heroInterval}
+            showToast={showToast}
+            onRefreshHero={fetchHero}
+          />
         )}
 
         {activeTab === "blogs" && (
