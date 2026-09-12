@@ -22,6 +22,7 @@ export default function AdminPage() {
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [heroImage, setHeroImage] = useState("");
   const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroSlides, setHeroSlides] = useState<{ imageUrl: string; targetUrl: string }[]>([]);
   const [heroInterval, setHeroInterval] = useState(4000);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [orders, setOrders] = useState<CustomerOrder[]>([]);
@@ -79,6 +80,9 @@ export default function AdminPage() {
       if (res.ok) {
         const data = await res.json();
         setHeroImage(data.imageUrl || "");
+        if (Array.isArray(data.slides)) {
+          setHeroSlides(data.slides);
+        }
         if (Array.isArray(data.images)) {
           setHeroImages(data.images);
         } else if (Array.isArray(data.imageUrls)) {
@@ -203,6 +207,7 @@ export default function AdminPage() {
           <HeroTab
             initialImageUrl={heroImage}
             initialImages={heroImages}
+            initialSlides={heroSlides}
             initialInterval={heroInterval}
             showToast={showToast}
             onRefreshHero={fetchHero}

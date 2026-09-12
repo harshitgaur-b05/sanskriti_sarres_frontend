@@ -21,7 +21,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:500
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroSlides, setHeroSlides] = useState<{ imageUrl: string; targetUrl?: string }[]>([]);
   const [heroInterval, setHeroInterval] = useState<number>(4000);
   const { addToCart } = useCart();
 
@@ -41,12 +41,12 @@ export default function Home() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
-          if (Array.isArray(data.images) && data.images.length > 0) {
-            setHeroImages(data.images);
-          } else if (Array.isArray(data.imageUrls) && data.imageUrls.length > 0) {
-            setHeroImages(data.imageUrls);
+          if (Array.isArray(data.slides) && data.slides.length > 0) {
+            setHeroSlides(data.slides);
+          } else if (Array.isArray(data.images) && data.images.length > 0) {
+            setHeroSlides(data.images.map((img: string) => ({ imageUrl: img, targetUrl: "/products" })));
           } else if (data.imageUrl) {
-            setHeroImages([data.imageUrl]);
+            setHeroSlides([{ imageUrl: data.imageUrl, targetUrl: "/products" }]);
           }
           if (typeof data.interval === "number") {
             setHeroInterval(data.interval);
@@ -67,7 +67,7 @@ export default function Home() {
   return (
     <>
       {/* Dynamic Auto-Scrolling Hero Carousel */}
-      <HeroCarousel images={heroImages} interval={heroInterval} />
+      <HeroCarousel slides={heroSlides} interval={heroInterval} />
 
       {/* Shop by Price Section */}
       <section className="py-12 md:py-16 lg:py-24 bg-surface px-margin-mobile md:px-margin-desktop" id="shop-by-price">

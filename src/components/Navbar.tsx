@@ -24,11 +24,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isScrolled
-          ? "bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 shadow-md py-0"
-          : "bg-gradient-to-b from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent border-b border-transparent py-1"
-      }`}
+      className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 shadow-sm"
     >
       <div className="h-20 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex items-center justify-between">
         <div className="flex items-center gap-4 lg:gap-12">

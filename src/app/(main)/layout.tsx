@@ -8,7 +8,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <CartProvider>
       <Navbar />
       <CartDrawer />
-      <main className="flex-1 flex flex-col">{children}</main>
+      <main className="flex-1 flex flex-col pt-20">{children}</main>
       <Footer />
     </CartProvider>
   );
