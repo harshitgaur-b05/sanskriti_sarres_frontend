@@ -21,7 +21,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:500
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [heroSlides, setHeroSlides] = useState<{ imageUrl: string; targetUrl?: string }[]>([]);
+  const [heroSlides, setHeroSlides] = useState<{ imageUrl: string; mobileImageUrl?: string; targetUrl?: string }[]>([]);
   const [heroInterval, setHeroInterval] = useState<number>(4000);
   const { addToCart } = useCart();
 

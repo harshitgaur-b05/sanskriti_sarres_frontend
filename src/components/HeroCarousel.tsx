@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 export interface HeroSlide {
   imageUrl: string;
+  mobileImageUrl?: string;
   targetUrl?: string;
 }
 
@@ -98,11 +99,16 @@ export default function HeroCarousel({
                   rel={isExternal ? "noopener noreferrer" : undefined}
                   className="block w-full h-full cursor-pointer group"
                 >
-                  <img
-                    alt={`Sanskriti Saree Banner ${idx + 1}`}
-                    src={slide.imageUrl}
-                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.01]"
-                  />
+                  <picture className="block w-full h-full">
+                    {slide.mobileImageUrl && (
+                      <source media="(max-width: 767px)" srcSet={slide.mobileImageUrl} />
+                    )}
+                    <img
+                      alt={`Sanskriti Saree Banner ${idx + 1}`}
+                      src={slide.imageUrl}
+                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.01]"
+                    />
+                  </picture>
                 </Link>
               </div>
             );
