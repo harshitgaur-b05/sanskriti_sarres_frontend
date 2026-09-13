@@ -120,14 +120,7 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Profile / Admin Icon */}
-          <Link
-            href="/admin"
-            className="w-8 h-8 rounded-full bg-primary hover:bg-tertiary-container flex items-center justify-center sm:ml-2 cursor-pointer transition-all shadow-xs"
-            title="Admin Portal"
-          >
-            <span className="material-symbols-outlined text-on-primary text-[18px]">person</span>
-          </Link>
+
         </div>
       </div>
 
