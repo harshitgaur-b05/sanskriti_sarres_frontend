@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { priceCategories, mockProducts } from "@/lib/mockData";
 import { useCart } from "@/lib/CartContext";
+import { optimizeImage } from "@/lib/image";
 import HeroCarousel from "@/components/HeroCarousel";
 
 interface Product {
@@ -124,8 +125,9 @@ export default function Home() {
                 <div key={pid} className="group bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
                   <Link href={`/products/${pid}`} className="relative aspect-[4/5] overflow-hidden bg-surface-container block">
                     <img
-                      src={product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800"}
+                      src={optimizeImage(product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800", 600)}
                       alt={product.name}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">

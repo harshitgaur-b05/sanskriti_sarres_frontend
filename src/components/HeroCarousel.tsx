@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { optimizeImage } from "@/lib/image";
 
 export interface HeroSlide {
   imageUrl: string;
@@ -101,11 +102,11 @@ export default function HeroCarousel({
                 >
                   <picture key={`${slide.imageUrl}-${slide.mobileImageUrl || ""}`} className="block w-full h-full">
                     {slide.mobileImageUrl && (
-                      <source media="(max-width: 767px)" srcSet={slide.mobileImageUrl} />
+                      <source media="(max-width: 767px)" srcSet={optimizeImage(slide.mobileImageUrl, 800)} />
                     )}
                     <img
                       alt={`Sanskriti Saree Banner ${idx + 1}`}
-                      src={slide.imageUrl}
+                      src={optimizeImage(slide.imageUrl, 1600)}
                       {...(idx === 0 ? { fetchPriority: "high" } : { loading: "lazy" })}
                       decoding="async"
                       className="w-full h-full object-contain md:object-cover object-center md:object-top transition-transform duration-700 group-hover:scale-[1.01]"

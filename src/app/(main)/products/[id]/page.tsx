@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
+import { optimizeImage } from "@/lib/image";
 
 interface Product {
   _id?: string;
@@ -111,7 +112,7 @@ export default function ProductDetailPage() {
         <div className="lg:col-span-7 space-y-4">
           <div className="relative rounded-xl overflow-hidden bg-surface-container border border-outline-variant/30 shadow-lg flex items-center justify-center min-h-[50vh]">
             <img
-              src={product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1200"}
+              src={optimizeImage(product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1200", 1200)}
               alt={product.name}
               className="w-full h-auto max-h-[85vh] object-contain"
             />
