@@ -17,6 +17,13 @@ export interface Product {
   isBestSeller?: boolean;
   colors?: string[];
   similarPieces?: string[];
+  sku?: string;
+  occasion?: string;
+  washCare?: string;
+  sareeDimension?: string;
+  blouseType?: string;
+  blouseDimension?: string;
+  craft?: string;
 }
 
 interface Props {
@@ -84,6 +91,13 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
     isBestSeller: product.isBestSeller || false,
     colors: product.colors || [],
     similarPieces: product.similarPieces || [],
+    sku: product.sku || "",
+    occasion: product.occasion || "",
+    washCare: product.washCare || "",
+    sareeDimension: product.sareeDimension || "",
+    blouseType: product.blouseType || "",
+    blouseDimension: product.blouseDimension || "",
+    craft: product.craft || "",
   });
 
   const set = (key: string, val: string | boolean | string[]) =>
@@ -127,6 +141,13 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
           isBestSeller: form.isBestSeller,
           colors: form.colors,
           similarPieces: form.similarPieces,
+          sku: form.sku,
+          occasion: form.occasion,
+          washCare: form.washCare,
+          sareeDimension: form.sareeDimension,
+          blouseType: form.blouseType,
+          blouseDimension: form.blouseDimension,
+          craft: form.craft,
         }),
       });
       if (res.ok) {
@@ -215,6 +236,74 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
                 type="number"
                 value={form.stock}
                 onChange={(e) => set("stock", e.target.value)}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+          </div>
+
+          {/* V1 Specs */}
+          <div className="grid grid-cols-2 gap-4 border-t border-neutral-800 pt-5 mt-2">
+            <h3 className="col-span-2 text-sm font-bold text-amber-100 mb-2">Product Specifications</h3>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">SKU</label>
+              <input
+                value={form.sku}
+                onChange={(e) => set("sku", e.target.value)}
+                placeholder="e.g. SAPP01AC3588"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Occasion</label>
+              <input
+                value={form.occasion}
+                onChange={(e) => set("occasion", e.target.value)}
+                placeholder="e.g. Festive Wear"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Wash Care</label>
+              <input
+                value={form.washCare}
+                onChange={(e) => set("washCare", e.target.value)}
+                placeholder="e.g. Dry Clean"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Craft</label>
+              <input
+                value={form.craft}
+                onChange={(e) => set("craft", e.target.value)}
+                placeholder="e.g. Woven"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Saree Dimension</label>
+              <input
+                value={form.sareeDimension}
+                onChange={(e) => set("sareeDimension", e.target.value)}
+                placeholder="e.g. 5.3 m x 1.1 m"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Blouse Type</label>
+              <input
+                value={form.blouseType}
+                onChange={(e) => set("blouseType", e.target.value)}
+                placeholder="e.g. Unstitched Blouse Piece"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Blouse Dimension</label>
+              <input
+                value={form.blouseDimension}
+                onChange={(e) => set("blouseDimension", e.target.value)}
+                placeholder="e.g. 70 cm x 1.1 m"
                 className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
               />
             </div>

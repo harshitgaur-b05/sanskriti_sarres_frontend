@@ -54,6 +54,13 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
     customCategory: "",
     isBestSeller: false,
     colors: [] as string[],
+    sku: "",
+    occasion: "",
+    washCare: "",
+    sareeDimension: "",
+    blouseType: "",
+    blouseDimension: "",
+    craft: "",
   });
 
   const set = (key: string, value: string | boolean | string[]) =>
@@ -97,6 +104,13 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
           isBestSeller: form.isBestSeller,
           colors: form.colors,
           similarPieces: [],
+          sku: form.sku,
+          occasion: form.occasion,
+          washCare: form.washCare,
+          sareeDimension: form.sareeDimension,
+          blouseType: form.blouseType,
+          blouseDimension: form.blouseDimension,
+          craft: form.craft,
         }),
       });
 
@@ -113,6 +127,13 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
           customCategory: "",
           isBestSeller: false,
           colors: [],
+          sku: "",
+          occasion: "",
+          washCare: "",
+          sareeDimension: "",
+          blouseType: "",
+          blouseDimension: "",
+          craft: "",
         });
         onSuccess();
       } else {
@@ -190,6 +211,18 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {field("Price (INR ₹) *", "price", "e.g. 12999", "number")}
           {field("Available Stock (Quantity)", "stock", "10", "number")}
+        </div>
+
+        {/* V1 Specs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-neutral-800 pt-6 mt-4">
+          <h3 className="md:col-span-2 text-sm font-bold text-amber-100">Product Specifications</h3>
+          {field("SKU", "sku", "e.g. SAPP01AC3588")}
+          {field("Occasion", "occasion", "e.g. Festive Wear")}
+          {field("Wash Care", "washCare", "e.g. Dry Clean")}
+          {field("Craft", "craft", "e.g. Woven")}
+          {field("Saree Dimension", "sareeDimension", "e.g. 5.3 m x 1.1 m")}
+          {field("Blouse Type", "blouseType", "e.g. Unstitched Blouse Piece")}
+          {field("Blouse Dimension", "blouseDimension", "e.g. 70 cm x 1.1 m")}
         </div>
 
         {/* Image URL & Cloudinary Upload */}

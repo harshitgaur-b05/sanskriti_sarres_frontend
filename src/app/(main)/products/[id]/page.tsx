@@ -38,6 +38,13 @@ interface Product {
   isBestSeller?: boolean;
   colors?: string[];
   similarPieces?: string[];
+  sku?: string;
+  occasion?: string;
+  washCare?: string;
+  sareeDimension?: string;
+  blouseType?: string;
+  blouseDimension?: string;
+  craft?: string;
 }
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
@@ -253,6 +260,61 @@ export default function ProductDetailPage() {
             <div className="bg-surface-container border border-outline-variant/40 rounded-lg p-3 flex gap-2 items-start mt-4">
               <span className="material-symbols-outlined text-on-surface-variant text-sm">info</span>
               <p className="text-on-surface-variant text-[10px] uppercase tracking-wider">Note: Saree comes unstitched. We do not provide stitching, fall, or picot services.</p>
+            </div>
+          </div>
+
+          {/* Product Specifications Table */}
+          <div className="mt-8 mb-4">
+            <h3 className="font-headline-md text-sm uppercase tracking-wider font-bold mb-4 text-on-surface">Product Details</h3>
+            <div className="border border-outline-variant/30 rounded-lg overflow-hidden flex flex-col">
+              {product.sku && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">SKU</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.sku}</div>
+                </div>
+              )}
+              {product.category && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Category</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.category}</div>
+                </div>
+              )}
+              {product.occasion && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Occasion</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.occasion}</div>
+                </div>
+              )}
+              {product.washCare && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Wash Care</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.washCare}</div>
+                </div>
+              )}
+              {product.craft && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Craft</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.craft}</div>
+                </div>
+              )}
+              {product.sareeDimension && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Saree Dimension</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.sareeDimension}</div>
+                </div>
+              )}
+              {product.blouseType && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Blouse Type</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.blouseType}</div>
+                </div>
+              )}
+              {product.blouseDimension && (
+                <div className="grid grid-cols-2 border-b border-outline-variant/30 last:border-b-0">
+                  <div className="p-3 bg-surface-container-low text-xs text-on-surface-variant font-medium">Blouse Dimension</div>
+                  <div className="p-3 text-xs text-on-surface font-semibold">{product.blouseDimension}</div>
+                </div>
+              )}
             </div>
           </div>
 
