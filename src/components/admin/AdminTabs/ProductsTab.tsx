@@ -11,6 +11,7 @@ export interface Product {
   slug: string;
   description: string;
   price: number;
+  originalPrice?: number;
   stock: number;
   image?: string;
   category: string;
@@ -84,6 +85,7 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
     name: product.name,
     description: product.description,
     price: String(product.price),
+    originalPrice: product.originalPrice ? String(product.originalPrice) : "",
     stock: String(product.stock),
     image: product.image || "",
     category: PRESET_CATEGORIES.includes(product.category) ? product.category : "Other",
@@ -135,6 +137,7 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
           name: form.name,
           description: form.description,
           price: Number(form.price),
+          originalPrice: form.originalPrice ? Number(form.originalPrice) : undefined,
           stock: Number(form.stock),
           image: form.image,
           category: finalCategory,
@@ -229,6 +232,24 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
                 onChange={(e) => set("price", e.target.value)}
                 className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
               />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">
+                Original MRP (₹)
+                <span className="ml-1 text-neutral-500 normal-case text-[10px]">for discount %</span>
+              </label>
+              <input
+                type="number"
+                value={form.originalPrice}
+                onChange={(e) => set("originalPrice", e.target.value)}
+                placeholder="e.g. 12999"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+              {form.price && form.originalPrice && Number(form.originalPrice) > Number(form.price) && (
+                <p className="text-[10px] text-amber-500 mt-1">
+                  {Math.round(((Number(form.originalPrice) - Number(form.price)) / Number(form.originalPrice)) * 100)}% discount
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-1.5">Stock</label>

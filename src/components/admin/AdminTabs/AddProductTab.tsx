@@ -48,6 +48,7 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
     slug: "",
     description: "",
     price: "",
+    originalPrice: "",
     stock: "",
     image: "",
     category: "Kanjivaram Silk",
@@ -98,6 +99,7 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
           slug: form.slug || undefined,
           description: form.description,
           price: form.price,
+          originalPrice: form.originalPrice || undefined,
           stock: form.stock,
           image: form.image,
           category: finalCategory,
@@ -121,6 +123,7 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
           slug: "",
           description: "",
           price: "",
+          originalPrice: "",
           stock: "",
           image: "",
           category: "Kanjivaram Silk",
@@ -208,9 +211,27 @@ export default function AddProductTab({ onSuccess, showToast }: Props) {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {field("Price (INR ₹) *", "price", "e.g. 12999", "number")}
-          {field("Available Stock (Quantity)", "stock", "10", "number")}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {field("Selling Price (₹) *", "price", "e.g. 9999", "number")}
+          <div>
+            <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-2">
+              Original MRP (₹)
+              <span className="ml-1 text-neutral-500 normal-case text-[10px]">for discount display</span>
+            </label>
+            <input
+              type="number"
+              placeholder="e.g. 12999"
+              value={form.originalPrice}
+              onChange={(e) => set("originalPrice", e.target.value)}
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-neutral-100 focus:outline-none focus:border-amber-500"
+            />
+            {form.price && form.originalPrice && Number(form.originalPrice) > Number(form.price) && (
+              <p className="text-[10px] text-amber-500 mt-1">
+                {Math.round(((Number(form.originalPrice) - Number(form.price)) / Number(form.originalPrice)) * 100)}% discount will be shown
+              </p>
+            )}
+          </div>
+          {field("Stock (Quantity)", "stock", "10", "number")}
         </div>
 
         {/* V1 Specs */}
