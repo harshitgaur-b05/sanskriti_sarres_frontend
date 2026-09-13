@@ -50,40 +50,40 @@ export default function Navbar() {
               alt="Sanskriti Sarees Mill Logo"
               className="h-10 md:h-11 w-auto object-contain transition-transform group-hover:scale-105"
             />
-            <span className="font-headline-md text-on-surface uppercase tracking-[0.2em] text-[15px] md:text-[17px] font-bold drop-shadow-xs hidden sm:inline-block">
+            <span className="font-headline-md text-on-surface text-[16px] md:text-[18px] font-medium hidden sm:inline-block tracking-tight">
               Sanskriti Sarees Mill
             </span>
           </Link>
 
           {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-gutter">
+          <nav className="hidden lg:flex items-center gap-8">
             <Link
               href="/"
-              className="font-label-md text-label-md text-on-surface uppercase tracking-widest hover:text-primary transition-colors font-medium text-xs"
+              className="text-on-surface hover:text-primary transition-colors font-medium text-[14px] tracking-wide"
             >
               Home
             </Link>
             <Link
               href="/products"
-              className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors font-medium text-xs"
+              className="text-on-surface-variant hover:text-on-surface transition-colors font-medium text-[14px] tracking-wide"
             >
               Products
             </Link>
             <Link
               href="/about"
-              className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors font-medium text-xs"
+              className="text-on-surface-variant hover:text-on-surface transition-colors font-medium text-[14px] tracking-wide"
             >
               About Us
             </Link>
             <Link
               href="/blog"
-              className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors font-medium text-xs"
+              className="text-on-surface-variant hover:text-on-surface transition-colors font-medium text-[14px] tracking-wide"
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors font-medium text-xs"
+              className="text-on-surface-variant hover:text-on-surface transition-colors font-medium text-[14px] tracking-wide"
             >
               Contact Us
             </Link>

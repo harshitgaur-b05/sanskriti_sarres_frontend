@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { mockProducts } from "@/lib/mockData";
 import { useCart } from "@/lib/CartContext";
@@ -16,6 +16,7 @@ interface Product {
   stock?: number;
   image?: string;
   category: string;
+  occasion?: string;
   isBestSeller?: boolean;
   colors?: string[];
   tags?: string[];
@@ -23,7 +24,7 @@ interface Product {
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 const MIN_PRICE = 0;
-const MAX_PRICE = 150000;
+const MAX_PRICE = 500000;
 
 const SAREE_COLORS = [
   { name: "Red", hex: "#C62828" },
@@ -60,48 +61,95 @@ function PriceRangeSlider({
   value: [number, number];
   onChange: (v: [number, number]) => void;
 }) {
-  const pct = (v: number) => ((v - min) / (max - min)) * 100;
+  const [localValue, setLocalValue] = useState<[number, number]>(value);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync with external value if it changes (e.g. clear all)
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  const updateParent = (newValue: [number, number]) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      onChange(newValue);
+    }, 150); // 150ms debounce for smooth dragging
+  };
 
   const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = Math.min(Number(e.target.value), value[1] - 500);
-    onChange([v, value[1]]);
+    const v = Math.min(Number(e.target.value), localValue[1] - 500);
+    setLocalValue([v, localValue[1]]);
+    updateParent([v, localValue[1]]);
   };
   const handleMax = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = Math.max(Number(e.target.value), value[0] + 500);
-    onChange([value[0], v]);
+    const v = Math.max(Number(e.target.value), localValue[0] + 500);
+    setLocalValue([localValue[0], v]);
+    updateParent([localValue[0], v]);
   };
+
+  const pct = (v: number) => ((v - min) / (max - min)) * 100;
 
   return (
     <div className="px-1">
-      {/* Track */}
-      <div className="relative h-1.5 rounded-full bg-outline-variant/40 my-4">
+      {/* Slider Area */}
+      <div className="relative h-6 flex items-center">
+        {/* Track Background */}
+        <div className="absolute inset-x-0 h-1 rounded-full bg-outline-variant/40" />
+        {/* Active Track */}
         <div
-          className="absolute h-full rounded-full bg-primary"
-          style={{ left: `${pct(value[0])}%`, right: `${100 - pct(value[1])}%` }}
+          className="absolute h-1 rounded-full bg-primary"
+          style={{ left: `${pct(localValue[0])}%`, right: `${100 - pct(localValue[1])}%` }}
         />
-      </div>
-      {/* Inputs stacked */}
-      <div className="relative h-5">
+        {/* Inputs */}
         <input
           type="range" min={min} max={max} step={500}
-          value={value[0]}
+          value={localValue[0]}
           onChange={handleMin}
-          className="absolute inset-0 w-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-container-lowest [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-runnable-track]:bg-transparent"
+          className="absolute inset-x-0 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-on-surface [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-container-lowest [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-on-surface [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface-container-lowest [&::-moz-range-thumb]:cursor-pointer z-10"
         />
         <input
           type="range" min={min} max={max} step={500}
-          value={value[1]}
+          value={localValue[1]}
           onChange={handleMax}
-          className="absolute inset-0 w-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-container-lowest [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-runnable-track]:bg-transparent"
+          className="absolute inset-x-0 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-on-surface [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-container-lowest [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-on-surface [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface-container-lowest [&::-moz-range-thumb]:cursor-pointer z-20"
         />
       </div>
-      <div className="flex justify-between mt-3">
-        <span className="font-label-md text-[11px] text-on-surface bg-surface-container px-2 py-1 rounded">
-          {formatINR(value[0])}
-        </span>
-        <span className="font-label-md text-[11px] text-on-surface bg-surface-container px-2 py-1 rounded">
-          {formatINR(value[1])}
-        </span>
+
+      {/* Inputs stacked */}
+      <div className="flex justify-between items-center mt-3 gap-2">
+        <div className="flex flex-1 items-center gap-1 bg-surface-container px-2 py-1.5 rounded border border-outline-variant/30 focus-within:border-primary transition-colors">
+          <span className="text-on-surface-variant text-[11px] font-medium">₹</span>
+          <input 
+            type="number" 
+            value={localValue[0]}
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              if (v >= min && v <= localValue[1]) {
+                setLocalValue([v, localValue[1]]);
+                updateParent([v, localValue[1]]);
+              }
+            }}
+            className="w-full bg-transparent text-xs font-label-md text-on-surface focus:outline-none placeholder-on-surface-variant/50"
+            placeholder="Min"
+          />
+        </div>
+        <span className="text-on-surface-variant text-[10px] px-1">-</span>
+        <div className="flex flex-1 items-center gap-1 bg-surface-container px-2 py-1.5 rounded border border-outline-variant/30 focus-within:border-primary transition-colors">
+          <span className="text-on-surface-variant text-[11px] font-medium">₹</span>
+          <input 
+            type="number" 
+            value={localValue[1]}
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              if (v >= localValue[0] && v <= max) {
+                setLocalValue([localValue[0], v]);
+                updateParent([localValue[0], v]);
+              }
+            }}
+            className="w-full bg-transparent text-xs font-label-md text-on-surface focus:outline-none placeholder-on-surface-variant/50"
+            placeholder="Max"
+          />
+        </div>
       </div>
     </div>
   );
@@ -136,6 +184,8 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
+  const [selectedDiscount, setSelectedDiscount] = useState<number | null>(null);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [sortBy, setSortBy] = useState("featured");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -154,10 +204,16 @@ export default function ProductsPage() {
     : (mockProducts as unknown as Product[]);
 
   const categories = Array.from(new Set(allProducts.map((p) => p.category))).sort();
+  const occasions = Array.from(new Set(allProducts.map((p) => p.occasion).filter(Boolean))).sort() as string[];
 
   const toggleCategory = (cat: string) =>
     setSelectedCategories((prev) =>
       prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
+
+  const toggleOccasion = (occ: string) =>
+    setSelectedOccasions((prev) =>
+      prev.includes(occ) ? prev.filter((o) => o !== occ) : [...prev, occ]
     );
 
   const toggleColor = (color: string) =>
@@ -168,20 +224,31 @@ export default function ProductsPage() {
   const clearAll = () => {
     setSelectedCategories([]);
     setSelectedColors([]);
+    setSelectedOccasions([]);
+    setSelectedDiscount(null);
     setPriceRange([MIN_PRICE, MAX_PRICE]);
   };
 
-  const hasFilters = selectedCategories.length > 0 || selectedColors.length > 0
+  const hasFilters = selectedCategories.length > 0 || selectedColors.length > 0 || selectedOccasions.length > 0 || selectedDiscount !== null
     || priceRange[0] > MIN_PRICE || priceRange[1] < MAX_PRICE;
 
   // Filter + sort
   let filtered = allProducts.filter((p) => {
     const catMatch = selectedCategories.length === 0 || selectedCategories.includes(p.category);
+    const occMatch = selectedOccasions.length === 0 || (p.occasion && selectedOccasions.includes(p.occasion));
     const priceMatch = p.price >= priceRange[0] && p.price <= priceRange[1];
     const colorMatch = selectedColors.length === 0 || (
       p.colors && selectedColors.some((c) => p.colors!.includes(c))
     );
-    return catMatch && priceMatch && colorMatch;
+    let discountMatch = true;
+    if (selectedDiscount !== null) {
+      let discount = 0;
+      if (p.originalPrice && p.originalPrice > p.price) {
+        discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
+      }
+      discountMatch = discount >= selectedDiscount;
+    }
+    return catMatch && occMatch && priceMatch && colorMatch && discountMatch;
   });
 
   if (sortBy === "price-asc") filtered = [...filtered].sort((a, b) => a.price - b.price);
@@ -233,6 +300,38 @@ export default function ProductsPage() {
         </div>
       </FilterSection>
 
+      {/* Occasion */}
+      {occasions.length > 0 && (
+        <FilterSection title="Occasion">
+          <div className="space-y-1.5">
+            {occasions.map((occ) => (
+              <label key={occ} className="flex items-center gap-2.5 cursor-pointer group">
+                <span
+                  className={`w-3.5 h-3.5 border flex-shrink-0 flex items-center justify-center transition-colors ${
+                    selectedOccasions.includes(occ)
+                      ? "bg-primary border-primary"
+                      : "border-outline-variant group-hover:border-on-surface"
+                  }`}
+                  onClick={() => toggleOccasion(occ)}
+                >
+                  {selectedOccasions.includes(occ) && (
+                    <span className="material-symbols-outlined text-on-primary" style={{ fontSize: "10px" }}>check</span>
+                  )}
+                </span>
+                <span
+                  onClick={() => toggleOccasion(occ)}
+                  className={`font-body-md text-xs transition-colors ${
+                    selectedOccasions.includes(occ) ? "text-on-surface font-semibold" : "text-on-surface-variant group-hover:text-on-surface"
+                  }`}
+                >
+                  {occ}
+                </span>
+              </label>
+            ))}
+          </div>
+        </FilterSection>
+      )}
+
       {/* Price Range */}
       <FilterSection title="Price Range">
         <PriceRangeSlider
@@ -263,6 +362,32 @@ export default function ProductsPage() {
               </button>
             );
           })}
+        </div>
+      </FilterSection>
+
+      {/* Discount */}
+      <FilterSection title="Discount">
+        <div className="space-y-1.5">
+          {[10, 20, 30, 40, 50].map((tier) => (
+            <label key={tier} className="flex items-center gap-2.5 cursor-pointer group">
+              <span
+                className={`w-3.5 h-3.5 border rounded-full flex-shrink-0 transition-colors ${
+                  selectedDiscount === tier
+                    ? "bg-primary border-primary"
+                    : "border-outline-variant group-hover:border-on-surface"
+                }`}
+                onClick={() => setSelectedDiscount(selectedDiscount === tier ? null : tier)}
+              />
+              <span
+                onClick={() => setSelectedDiscount(selectedDiscount === tier ? null : tier)}
+                className={`font-body-md text-xs transition-colors ${
+                  selectedDiscount === tier ? "text-on-surface font-semibold" : "text-on-surface-variant group-hover:text-on-surface"
+                }`}
+              >
+                {tier}% or more
+              </span>
+            </label>
+          ))}
         </div>
       </FilterSection>
 
@@ -348,6 +473,22 @@ export default function ProductsPage() {
                   </button>
                 </span>
               ))}
+              {selectedOccasions.map((occ) => (
+                <span key={occ} className="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-variant text-on-surface text-[10px] font-label-md uppercase tracking-wider border border-outline-variant/40">
+                  {occ}
+                  <button onClick={() => toggleOccasion(occ)} className="hover:opacity-70">
+                    <span className="material-symbols-outlined" style={{ fontSize: "12px" }}>close</span>
+                  </button>
+                </span>
+              ))}
+              {selectedDiscount !== null && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#8B1A1A] text-white text-[10px] font-label-md uppercase tracking-wider">
+                  {selectedDiscount}%+ Off
+                  <button onClick={() => setSelectedDiscount(null)} className="hover:opacity-70">
+                    <span className="material-symbols-outlined" style={{ fontSize: "12px" }}>close</span>
+                  </button>
+                </span>
+              )}
               {selectedColors.map((c) => (
                 <span key={c} className="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container border border-outline-variant text-on-surface text-[10px] font-label-md uppercase tracking-wider">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SAREE_COLORS.find((x) => x.name === c)?.hex }} />
@@ -493,15 +634,27 @@ export default function ProductsPage() {
                             ))}
                           </div>
                         )}
-                        <div className="flex items-baseline gap-2 mt-1.5">
+                        <div className="flex flex-wrap items-baseline gap-2 mt-1.5">
                           <span className="font-body-md text-sm font-semibold text-on-surface">
                             {formatINR(product.price)}
                           </span>
-                          {product.originalPrice && (
-                            <span className="font-body-md text-xs text-on-surface-variant line-through">
-                              {formatINR(product.originalPrice)}
-                            </span>
-                          )}
+                          {(() => {
+                            const original = product.originalPrice && product.originalPrice > product.price 
+                              ? product.originalPrice 
+                              : Math.round(product.price / 0.85);
+                            const discount = Math.round(((original - product.price) / original) * 100);
+                            
+                            return (
+                              <>
+                                <span className="font-body-md text-xs text-on-surface-variant line-through">
+                                  {formatINR(original)}
+                                </span>
+                                <span className="font-label-md text-[10px] text-[#8B1A1A] uppercase tracking-wider font-bold">
+                                  ({discount}% OFF)
+                                </span>
+                              </>
+                            );
+                          })()}
                         </div>
                         <p className="font-label-md text-[10px] text-on-surface-variant mt-0.5">
                           Incl. of all taxes
