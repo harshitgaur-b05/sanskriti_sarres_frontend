@@ -268,12 +268,12 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-[75vh] bg-surface flex items-center justify-center px-4 py-16">
         <div className="max-w-xl w-full bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-8 shadow-xl text-center space-y-6">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto text-emerald-600">
+          <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mx-auto text-primary border border-outline-variant">
             <span className="material-symbols-outlined text-4xl">verified</span>
           </div>
 
           <div>
-            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-widest block">
+            <span className="text-xs font-semibold text-primary uppercase tracking-widest block">
               Payment Confirmed & Order Placed
             </span>
             <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface mt-1">
@@ -291,12 +291,12 @@ export default function CheckoutPage() {
             </span>
 
             <div className="grid grid-cols-4 gap-2 text-center text-[10px] uppercase tracking-wider font-semibold">
-              <div className="text-emerald-700 flex flex-col items-center gap-1">
-                <span className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs">✓</span>
+              <div className="text-primary flex flex-col items-center gap-1">
+                <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs">✓</span>
                 Order Placed
               </div>
-              <div className="text-amber-700 flex flex-col items-center gap-1">
-                <span className="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs">2</span>
+              <div className="text-on-surface-variant flex flex-col items-center gap-1">
+                <span className="w-6 h-6 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center text-xs border border-outline-variant">2</span>
                 Weaving Prep
               </div>
               <div className="text-on-surface-variant/40 flex flex-col items-center gap-1">
@@ -310,7 +310,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-              <div className="bg-emerald-600 h-full w-1/4 rounded-full" />
+              <div className="bg-primary h-full w-1/4 rounded-full" />
             </div>
 
             <div className="text-xs text-on-surface-variant flex justify-between pt-2 border-t border-outline-variant/20">
@@ -394,10 +394,10 @@ export default function CheckoutPage() {
           <form onSubmit={handlePayNow} className="lg:col-span-7 space-y-8 bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-xs">
             
             {/* Disclaimer Banner */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
-              <span className="material-symbols-outlined text-amber-600">info</span>
+            <div className="bg-surface-container border border-outline-variant/40 rounded-xl p-4 flex gap-3 items-start">
+              <span className="material-symbols-outlined text-on-surface-variant">info</span>
               <div>
-                <h4 className="text-amber-900 font-bold text-sm">Unstitched Sarees Only</h4>
+                <h4 className="text-on-surface font-bold text-sm">Unstitched Sarees Only</h4>
                 <p className="text-amber-800 text-xs mt-1">Please note that all sarees are shipped unstitched. We do not provide stitching, fall, or picot services.</p>
               </div>
             </div>

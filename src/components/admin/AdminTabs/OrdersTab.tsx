@@ -63,7 +63,10 @@ export default function OrdersTab({ orders, loading, onRefresh, showToast }: Pro
     try {
       const res = await fetch(`${BACKEND_URL}/api/orders/${orderId}/status`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": process.env.NEXT_PUBLIC_ADMIN_API_KEY || "sanskriti-admin-2024",
+        },
         body: JSON.stringify({ orderStatus: newStatus }),
       });
       if (res.ok) {

@@ -118,55 +118,58 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {displayProducts.map((product) => {
               const pid = (product as any)._id || product.id;
+              // Simulate a 15% discount display price
+              const price = Number(product.price);
+              const fakeOriginal = Math.round(price * 1.15 / 100) * 100;
               return (
-                <div key={pid} className="group bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-                  <Link href={`/products/${pid}`} className="relative aspect-[4/5] overflow-hidden bg-surface-container block">
+                <div key={pid} className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col border border-gray-100">
+                  <Link href={`/products/${pid}`} className="relative overflow-hidden bg-surface-container block">
+                    {/* Vertical New Arrivals badge — absolute overlay, does NOT push image */}
+                    <div className="absolute top-0 left-0 z-10 h-full w-6 flex items-start pt-2 pointer-events-none">
+                      <span className="bg-rose-600 text-white text-[8px] font-bold uppercase leading-tight px-0.5 py-1"
+                        style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '0.12em' }}>
+                        {(product as any).isBestSeller ? 'Best Seller' : 'New Arrivals'}
+                      </span>
+                    </div>
                     <img
                       src={optimizeImage(product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800", 600)}
                       alt={product.name}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="w-full aspect-[3/4] object-cover object-top group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-                      <span className="bg-primary text-on-primary px-2.5 py-1 text-[9px] md:text-[10px] font-label-md uppercase tracking-wider rounded-sm font-semibold">
-                        {product.category}
-                      </span>
-                    </div>
-                    {(product as any).isBestSeller && (
-                      <div className="absolute top-3 right-3 bg-amber-600 text-white px-2 py-0.5 text-[10px] font-bold rounded z-10">
-                        BEST SELLER
-                      </div>
-                    )}
-                    {/* Quick add on hover */}
-                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-3 z-20">
+                    {/* Wishlist + Quick View icons bottom right */}
+                    <div className="absolute bottom-2 right-2 flex gap-1.5 z-10">
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                        className="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center shadow"
+                        aria-label="Wishlist"
+                      >
+                        <span className="material-symbols-outlined text-[16px] text-gray-600">favorite</span>
+                      </button>
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          addToCart({
-                            id: pid,
-                            name: product.name,
-                            price: Number(product.price),
-                            image: product.image,
-                            category: product.category,
-                          });
+                          addToCart({ id: pid, name: product.name, price, image: product.image, category: product.category });
                         }}
-                        className="w-full py-2 bg-primary text-on-primary text-xs font-label-md uppercase tracking-widest rounded-sm shadow-lg hover:bg-tertiary-container transition-colors"
+                        className="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center shadow"
+                        aria-label="Quick Add"
                       >
-                        Add to Cart
+                        <span className="material-symbols-outlined text-[16px] text-gray-600">shopping_bag</span>
                       </button>
                     </div>
                   </Link>
-                  <div className="p-4 md:p-5 flex flex-col flex-1 text-center">
-                    <span className="text-[9px] md:text-[11px] font-caption text-on-surface-variant uppercase tracking-widest mb-1">{product.category}</span>
-                    <Link href={`/products/${pid}`} className="font-headline-md text-base md:text-lg text-on-surface mb-2 line-clamp-1 hover:text-primary transition-colors">
+                  <div className="p-2.5 md:p-3 flex flex-col flex-1">
+                    <Link href={`/products/${pid}`} className="font-semibold text-[12px] md:text-sm text-gray-900 mb-1 line-clamp-2 leading-snug hover:text-rose-700 transition-colors">
                       {product.name}
                     </Link>
-                    <div className="flex items-center justify-center gap-2 mt-auto">
-                      <span className="font-body-md text-sm md:text-base font-semibold text-on-surface">₹{product.price.toLocaleString("en-IN")}</span>
+                    <div className="flex items-center gap-1.5 flex-wrap mt-auto pt-1">
+                      <span className="text-[13px] md:text-sm font-bold text-gray-900">₹{price.toLocaleString("en-IN")}</span>
+                      <span className="text-[10px] text-gray-400 line-through">₹{fakeOriginal.toLocaleString("en-IN")}</span>
+                      <span className="text-[10px] font-bold text-[#8B1A1A]">15% OFF</span>
                     </div>
                   </div>
                 </div>

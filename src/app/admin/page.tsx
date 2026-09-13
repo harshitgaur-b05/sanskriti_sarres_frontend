@@ -109,7 +109,9 @@ export default function AdminPage() {
   const fetchOrders = useCallback(async () => {
     setLoadingOrders(true);
     try {
-      const res = await fetch(`${BACKEND_URL}/api/orders`);
+      const res = await fetch(`${BACKEND_URL}/api/orders`, {
+        headers: { "x-admin-key": process.env.NEXT_PUBLIC_ADMIN_API_KEY || "sanskriti-admin-2024" },
+      });
       if (res.ok) setOrders(await res.json());
     } catch (err) {
       console.error(err);
@@ -118,14 +120,19 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Fetch orders immediately on mount (no auth required on this endpoint)
+  // and again whenever isAuthenticated changes
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchProducts();
       fetchHero();
       fetchBlogs();
-      fetchOrders();
     }
-  }, [isAuthenticated, fetchProducts, fetchHero, fetchBlogs, fetchOrders]);
+  }, [isAuthenticated, fetchProducts, fetchHero, fetchBlogs]);
 
   // ── Seed ──────────────────────────────────────────────
   const handleSeedProducts = async () => {

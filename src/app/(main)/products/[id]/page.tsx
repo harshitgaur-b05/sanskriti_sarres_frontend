@@ -6,6 +6,25 @@ import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import { optimizeImage } from "@/lib/image";
 
+function AccordionItem({ title, children }: { title: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between py-4 text-left font-semibold text-sm text-on-surface"
+      >
+        {title}
+        <span className="material-symbols-outlined text-on-surface-variant text-xl transition-transform duration-200"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+          expand_more
+        </span>
+      </button>
+      {open && <div className="pb-4">{children}</div>}
+    </div>
+  );
+}
+
 interface Product {
   _id?: string;
   id?: string;
@@ -110,19 +129,22 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Product Image Stage */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="relative rounded-xl overflow-hidden bg-surface-container border border-outline-variant/30 shadow-lg flex items-center justify-center min-h-[50vh]">
+          <div className="rounded-xl overflow-hidden bg-surface-container border border-outline-variant/30 shadow-lg flex items-center justify-center min-h-[50vh]">
             <img
               src={optimizeImage(product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1200", 1200)}
               alt={product.name}
               className="w-full h-auto max-h-[85vh] object-contain"
             />
+          </div>
+          {/* Badges below image — never overlap on mobile */}
+          <div className="flex flex-wrap gap-2 pt-1">
             {product.isBestSeller && (
-              <span className="absolute top-4 left-4 bg-amber-600 text-white font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded shadow-md">
+              <span className="bg-[#8B1A1A] text-white font-bold text-[10px] uppercase tracking-widest px-3 py-1.5">
                 Archival Bestseller
               </span>
             )}
-            <span className={`absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded shadow-md ${
-              isOutOfStock ? "bg-rose-900 text-rose-100" : "bg-emerald-800 text-emerald-100"
+            <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 ${
+              isOutOfStock ? "bg-on-surface text-surface" : "bg-primary text-on-primary"
             }`}>
               {isOutOfStock ? "Sold Out" : `In Vault (${stock} Available)`}
             </span>
@@ -138,14 +160,16 @@ export default function ProductDetailPage() {
             <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface leading-tight mb-3">
               {product.name}
             </h1>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="font-headline-md text-2xl font-bold text-on-surface">
-                ₹{Number(product.price).toLocaleString("en-IN")}
+            <div className="flex flex-wrap items-baseline gap-2 mb-1">
+              <span className="font-headline-md text-xl md:text-2xl font-bold text-on-surface">
+                MRP ₹{Number(product.price).toLocaleString("en-IN")}
               </span>
-              <span className="text-xs text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-semibold">
-                Inclusive of all taxes & free shipping
+              <span className="text-sm text-gray-400 line-through">
+                ₹{Math.round(Number(product.price) * 1.15 / 100 * 100).toLocaleString("en-IN")}
               </span>
+              <span className="text-sm font-bold text-[#8B1A1A]">15% OFF</span>
             </div>
+            <p className="text-xs text-on-surface-variant">(Inclusive of all taxes) · <span className="text-rose-700 font-semibold">{stock <= 3 ? `Only ${stock} left!` : `${stock} in stock`}</span></p>
 
             {/* Colors Display */}
             {product.colors && product.colors.length > 0 && (
@@ -180,14 +204,8 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          <div className="border-t border-b border-outline-variant/30 py-4 space-y-3 font-body-md text-xs text-on-surface-variant leading-relaxed">
+          <div className="border-t border-outline-variant/30 py-4 space-y-2 font-body-md text-xs text-on-surface-variant leading-relaxed">
             <p>{product.description}</p>
-            <div className="grid grid-cols-2 gap-2 pt-2 text-[11px]">
-              <div><strong>Craft:</strong> Traditional Varanasi Weave</div>
-              <div><strong>Fabric:</strong> Certified Pure Silk</div>
-              <div><strong>Blouse Piece:</strong> Included (Unstitched)</div>
-              <div><strong>Guarantee:</strong> Silk Mark Verified</div>
-            </div>
           </div>
 
           {/* Quantity Selector & Add to Cart */}
@@ -230,13 +248,48 @@ export default function ProductDetailPage() {
                 Go to Checkout
               </Link>
             </div>
-            
+
             {/* Unstitched Disclaimer */}
-            <div className="bg-amber-50/50 border border-amber-200/50 rounded-lg p-3 flex gap-2 items-start mt-4">
-              <span className="material-symbols-outlined text-amber-600 text-sm">info</span>
-              <p className="text-amber-800 text-[10px] uppercase tracking-wider">Note: Saree comes unstitched. We do not provide stitching, fall, or picot services.</p>
+            <div className="bg-surface-container border border-outline-variant/40 rounded-lg p-3 flex gap-2 items-start mt-4">
+              <span className="material-symbols-outlined text-on-surface-variant text-sm">info</span>
+              <p className="text-on-surface-variant text-[10px] uppercase tracking-wider">Note: Saree comes unstitched. We do not provide stitching, fall, or picot services.</p>
             </div>
           </div>
+
+          {/* Accordion Sections */}
+          <div className="mt-4 border-t border-outline-variant/20 divide-y divide-outline-variant/20">
+            <AccordionItem title="Delivery & Returns">
+              <ul className="list-disc list-inside text-xs text-on-surface-variant space-y-1.5 leading-relaxed">
+                <li>Returns accepted within 7 days from receipt of product(s)</li>
+                <li>Refunds processed within 7–15 business days after product(s) reach our warehouse</li>
+                <li>For more details, refer to our <Link href="/refund-policy" className="text-primary underline">Return &amp; Cancellation Policy</Link></li>
+                <li>Products with 50% or more discount are not eligible for return</li>
+              </ul>
+            </AccordionItem>
+            <AccordionItem title="Contact Details">
+              <div className="text-xs text-on-surface-variant space-y-2">
+                <p>Feel free to contact our Customer Care team:</p>
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-sm text-on-surface-variant">call</span>
+                  <span>+91 98765 43210 (Mon–Sat, 10am to 6pm)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-sm text-on-surface-variant">mail</span>
+                  <span>support@sanskritimill.com</span>
+                </div>
+              </div>
+            </AccordionItem>
+            <AccordionItem title="More">
+              <div className="text-xs text-on-surface-variant space-y-1 leading-relaxed">
+                <div><strong>Country of Origin:</strong> India</div>
+                <div><strong>Craft:</strong> Traditional Varanasi / Handloom Weave</div>
+                <div><strong>Blouse Piece:</strong> Included (Unstitched)</div>
+                <div><strong>Guarantee:</strong> Silk Mark Verified</div>
+                <div className="pt-1"><strong>Manufactured & Marketed By:</strong><br />Sanskriti Sarees Mill, Varanasi, Uttar Pradesh – 221001</div>
+              </div>
+            </AccordionItem>
+          </div>
+
         </div>
       </div>
 
