@@ -142,7 +142,7 @@ export default function ProductsPage() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/products`)
+    fetch(`${BACKEND_URL}/api/products?t=${Date.now()}`, { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => { if (data?.length > 0) setProducts(data); })
       .catch(() => {})

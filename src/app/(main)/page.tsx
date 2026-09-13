@@ -28,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     // Fetch dynamic products from MongoDB backend
-    fetch(`${BACKEND_URL}/api/products`)
+    fetch(`${BACKEND_URL}/api/products?t=${Date.now()}`, { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => {
         if (data && data.length > 0) {

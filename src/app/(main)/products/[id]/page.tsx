@@ -63,7 +63,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!productId) return;
 
-    fetch(`${BACKEND_URL}/api/products/${productId}`)
+    fetch(`${BACKEND_URL}/api/products/${productId}?t=${Date.now()}`, { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error("Product not found");
         return res.json();
