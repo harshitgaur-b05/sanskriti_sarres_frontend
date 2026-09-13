@@ -32,6 +32,7 @@ interface Product {
   slug: string;
   description: string;
   price: number;
+  originalPrice?: number;
   stock?: number;
   image?: string;
   category: string;
@@ -169,12 +170,23 @@ export default function ProductDetailPage() {
             </h1>
             <div className="flex flex-wrap items-baseline gap-2 mb-1">
               <span className="font-headline-md text-xl md:text-2xl font-bold text-on-surface">
-                MRP ₹{Number(product.price).toLocaleString("en-IN")}
+                ₹{Number(product.price).toLocaleString("en-IN")}
               </span>
-              <span className="text-sm text-gray-400 line-through">
-                ₹{Math.round(Number(product.price) * 1.15 / 100 * 100).toLocaleString("en-IN")}
-              </span>
-              <span className="text-sm font-bold text-[#8B1A1A]">15% OFF</span>
+              {(() => {
+                const orig = (product as any).originalPrice && (product as any).originalPrice > product.price
+                  ? (product as any).originalPrice
+                  : null;
+                if (!orig) return null;
+                const disc = Math.round(((orig - product.price) / orig) * 100);
+                return (
+                  <>
+                    <span className="text-sm text-gray-400 line-through">
+                      ₹{Number(orig).toLocaleString("en-IN")}
+                    </span>
+                    <span className="text-sm font-bold text-[#8B1A1A]">{disc}% OFF</span>
+                  </>
+                );
+              })()}
             </div>
             <p className="text-xs text-on-surface-variant">(Inclusive of all taxes) · <span className="text-rose-700 font-semibold">{stock <= 3 ? `Only ${stock} left!` : `${stock} in stock`}</span></p>
 
