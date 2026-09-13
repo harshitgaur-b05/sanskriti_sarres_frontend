@@ -328,9 +328,46 @@ function EditModal({ product, allProducts, onClose, onSaved, showToast }: EditMo
                   </button>
                 );
               })}
+              
+              {/* Display Custom Colors */}
+              {form.colors.filter(c => !c.startsWith("#")).map(customColor => (
+                <button
+                  key={customColor}
+                  type="button"
+                  onClick={() => set("colors", form.colors.filter((c) => c !== customColor))}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border transition-all border-amber-500 text-amber-200 bg-amber-950/40"
+                >
+                  <span className="material-symbols-outlined text-[10px]">close</span>
+                  {customColor}
+                </button>
+              ))}
             </div>
+
+            <div className="flex items-center gap-2 mt-3">
+              <input
+                type="text"
+                placeholder="Add custom color name..."
+                value={(form as any).customColorText || ""}
+                onChange={(e) => set("customColorText", e.target.value)}
+                className="bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-1.5 text-xs text-neutral-100 focus:outline-none focus:border-amber-500"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const text = (form as any).customColorText;
+                  if (text && text.trim() && !form.colors.includes(text.trim())) {
+                    set("colors", [...form.colors, text.trim()]);
+                    set("customColorText", "");
+                  }
+                }}
+                className="px-3 py-1.5 bg-neutral-800 text-amber-400 text-xs rounded-lg hover:bg-neutral-700 transition-colors"
+              >
+                Add Color
+              </button>
+            </div>
+
             {form.colors.length > 0 && (
-              <p className="text-[10px] text-neutral-500 mt-1.5">
+              <p className="text-[10px] text-neutral-500 mt-2">
                 Selected: {form.colors.map((h) => SAREE_COLORS.find((c) => c.hex === h)?.label || h).join(", ")}
               </p>
             )}

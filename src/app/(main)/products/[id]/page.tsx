@@ -109,11 +109,11 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Product Image Stage */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="aspect-[4/5] rounded-xl overflow-hidden bg-surface-container border border-outline-variant/30 relative shadow-lg">
+          <div className="relative rounded-xl overflow-hidden bg-surface-container border border-outline-variant/30 shadow-lg flex items-center justify-center min-h-[50vh]">
             <img
               src={product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1200"}
               alt={product.name}
-              className="w-full h-full object-cover"
+              className="w-full h-auto max-h-[85vh] object-contain"
             />
             {product.isBestSeller && (
               <span className="absolute top-4 left-4 bg-amber-600 text-white font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded shadow-md">
@@ -137,7 +137,7 @@ export default function ProductDetailPage() {
             <h1 className="font-headline-lg text-2xl md:text-3xl text-on-surface leading-tight mb-3">
               {product.name}
             </h1>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-4">
               <span className="font-headline-md text-2xl font-bold text-on-surface">
                 ₹{Number(product.price).toLocaleString("en-IN")}
               </span>
@@ -145,6 +145,38 @@ export default function ProductDetailPage() {
                 Inclusive of all taxes & free shipping
               </span>
             </div>
+
+            {/* Colors Display */}
+            {product.colors && product.colors.length > 0 && (
+              <div className="mt-4">
+                <span className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant block mb-2">Available Colors</span>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map(color => {
+                    const isHex = color.startsWith("#");
+                    // Minimal preset map just for the product page display
+                    const presetLabels: Record<string, string> = {
+                      "#9B1B30": "Ruby Red", "#5C1A1A": "Deep Maroon", "#1B3A6B": "Royal Blue", "#006B5E": "Peacock Green",
+                      "#C8960C": "Gold", "#F5F0E8": "Ivory", "#C89A2A": "Mustard", "#D4687A": "Rose Pink",
+                      "#6B3FA0": "Violet", "#C4562A": "Brick Orange", "#0F7E7E": "Teal", "#1A237E": "Navy",
+                      "#D4C5A9": "Beige", "#1A1A1A": "Black", "#F8F8F8": "White"
+                    };
+                    return (
+                      <div key={color} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-low shadow-sm">
+                        {isHex && (
+                          <span 
+                            className="w-3 h-3 rounded-full border border-outline-variant/50 flex-shrink-0 shadow-sm"
+                            style={{ backgroundColor: color }}
+                          />
+                        )}
+                        <span className="text-xs text-on-surface font-medium">
+                          {isHex ? (presetLabels[color] || "Color") : color}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="border-t border-b border-outline-variant/30 py-4 space-y-3 font-body-md text-xs text-on-surface-variant leading-relaxed">
