@@ -45,9 +45,7 @@ export default function AdminSidebar({
       <div>
         {/* Brand Header */}
         <div className="flex items-center space-x-3 mb-8">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-600 via-rose-700 to-amber-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-amber-900/30">
-            S
-          </div>
+          <img src="/logo.png" alt="Sanskriti Sarees Mill Logo" className="w-10 h-10 object-contain" />
           <div>
             <h1 className="text-lg font-serif font-bold text-amber-200 tracking-wide">
               Sanskriti Sarees

@@ -38,8 +38,13 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <span className="font-headline-md text-headline-md text-on-surface uppercase tracking-[0.25em] text-[17px] font-bold drop-shadow-xs">
-              Sanskriti
+            <img
+              src="/logo.png"
+              alt="Sanskriti Sarees Mill Logo"
+              className="h-10 md:h-11 w-auto object-contain transition-transform group-hover:scale-105"
+            />
+            <span className="font-headline-md text-on-surface uppercase tracking-[0.2em] text-[15px] md:text-[17px] font-bold drop-shadow-xs hidden sm:inline-block">
+              Sanskriti Sarees Mill
             </span>
           </Link>
 

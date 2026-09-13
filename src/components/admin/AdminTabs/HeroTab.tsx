@@ -39,7 +39,13 @@ export default function HeroTab({
 
   useEffect(() => {
     if (initialSlides && initialSlides.length > 0) {
-      setSlides(initialSlides);
+      setSlides(
+        initialSlides.map((s) => ({
+          imageUrl: s.imageUrl || "",
+          mobileImageUrl: s.mobileImageUrl || (s as any).mobileImage || "",
+          targetUrl: s.targetUrl || "/products",
+        }))
+      );
     } else if (initialImages && initialImages.length > 0) {
       setSlides(initialImages.map((img) => ({ imageUrl: img, mobileImageUrl: "", targetUrl: "/products" })));
     } else if (initialImageUrl) {
@@ -252,6 +258,10 @@ export default function HeroTab({
       });
 
       if (res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.slides)) {
+          setSlides(data.slides);
+        }
         showToast("Hero banners (Desktop & Mobile) saved to Cloudinary & MongoDB successfully!");
         if (onRefreshHero) onRefreshHero();
       } else {

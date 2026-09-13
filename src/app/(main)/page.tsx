@@ -122,43 +122,47 @@ export default function Home() {
               const pid = (product as any)._id || product.id;
               return (
                 <div key={pid} className="group bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-                  <div className="relative aspect-[4/5] overflow-hidden bg-surface-container">
+                  <Link href={`/products/${pid}`} className="relative aspect-[4/5] overflow-hidden bg-surface-container block">
                     <img
                       src={product.image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800"}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                    <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                       <span className="bg-primary text-on-primary px-2.5 py-1 text-[9px] md:text-[10px] font-label-md uppercase tracking-wider rounded-sm font-semibold">
                         {product.category}
                       </span>
                     </div>
                     {(product as any).isBestSeller && (
-                      <div className="absolute top-3 right-3 bg-amber-600 text-white px-2 py-0.5 text-[10px] font-bold rounded">
+                      <div className="absolute top-3 right-3 bg-amber-600 text-white px-2 py-0.5 text-[10px] font-bold rounded z-10">
                         BEST SELLER
                       </div>
                     )}
                     {/* Quick add on hover */}
-                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-3">
+                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-3 z-20">
                       <button
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           addToCart({
                             id: pid,
                             name: product.name,
                             price: Number(product.price),
                             image: product.image,
                             category: product.category,
-                          })
-                        }
+                          });
+                        }}
                         className="w-full py-2 bg-primary text-on-primary text-xs font-label-md uppercase tracking-widest rounded-sm shadow-lg hover:bg-tertiary-container transition-colors"
                       >
                         Add to Cart
                       </button>
                     </div>
-                  </div>
+                  </Link>
                   <div className="p-4 md:p-5 flex flex-col flex-1 text-center">
                     <span className="text-[9px] md:text-[11px] font-caption text-on-surface-variant uppercase tracking-widest mb-1">{product.category}</span>
-                    <h3 className="font-headline-md text-base md:text-lg text-on-surface mb-2 line-clamp-1">{product.name}</h3>
+                    <Link href={`/products/${pid}`} className="font-headline-md text-base md:text-lg text-on-surface mb-2 line-clamp-1 hover:text-primary transition-colors">
+                      {product.name}
+                    </Link>
                     <div className="flex items-center justify-center gap-2 mt-auto">
                       <span className="font-body-md text-sm md:text-base font-semibold text-on-surface">₹{product.price.toLocaleString("en-IN")}</span>
                     </div>

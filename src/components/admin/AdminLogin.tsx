@@ -25,9 +25,7 @@ export default function AdminLogin({ onLogin, error }: Props) {
       <div className="w-full max-w-md bg-neutral-900 border border-amber-900/30 rounded-3xl p-8 shadow-2xl relative z-10">
         {/* Logo & Header */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-amber-600 via-rose-700 to-amber-500 flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-amber-950/50 mb-4">
-            S
-          </div>
+          <img src="/logo.png" alt="Sanskriti Sarees Mill Logo" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h1 className="text-2xl font-serif font-bold text-amber-200 tracking-wide">
             Sanskriti Sarees
           </h1>
@@ -50,6 +48,7 @@ export default function AdminLogin({ onLogin, error }: Props) {
             <input
               type="text"
               required
+              autoComplete="username"
               placeholder="admin@sanskriti.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -64,6 +63,7 @@ export default function AdminLogin({ onLogin, error }: Props) {
             <input
               type="password"
               required
+              autoComplete="current-password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

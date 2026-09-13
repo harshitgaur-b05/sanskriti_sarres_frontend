@@ -78,7 +78,7 @@ export default function HeroCarousel({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative h-[60vh] sm:h-[75vh] md:h-[calc(100vh-80px)] min-h-[360px] md:min-h-[500px] w-full flex items-center justify-center">
+      <div className="relative w-full aspect-[4/5] sm:aspect-[16/9] md:aspect-auto md:h-[calc(100vh-80px)] min-h-[420px] sm:min-h-[500px] md:min-h-[500px] flex items-center justify-center bg-black/95">
         {/* Full Image Background Slides with Clickable Link */}
         <div className="absolute inset-0 w-full h-full">
           {activeSlides.map((slide, idx) => {
@@ -99,14 +99,14 @@ export default function HeroCarousel({
                   rel={isExternal ? "noopener noreferrer" : undefined}
                   className="block w-full h-full cursor-pointer group"
                 >
-                  <picture className="block w-full h-full">
+                  <picture key={`${slide.imageUrl}-${slide.mobileImageUrl || ""}`} className="block w-full h-full">
                     {slide.mobileImageUrl && (
                       <source media="(max-width: 767px)" srcSet={slide.mobileImageUrl} />
                     )}
                     <img
                       alt={`Sanskriti Saree Banner ${idx + 1}`}
                       src={slide.imageUrl}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.01]"
+                      className="w-full h-full object-contain md:object-cover object-center md:object-top transition-transform duration-700 group-hover:scale-[1.01]"
                     />
                   </picture>
                 </Link>
