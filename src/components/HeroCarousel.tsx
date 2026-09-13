@@ -75,48 +75,73 @@ export default function HeroCarousel({
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-surface-container-highest select-none cursor-pointer"
+      className="relative w-full overflow-hidden bg-black select-none"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative w-full h-[100dvh] sm:h-[60vh] md:h-[calc(100vh-80px)] min-h-[500px] flex items-center justify-center bg-black/95">
-        {/* Full Image Background Slides with Clickable Link */}
-        <div className="absolute inset-0 w-full h-full">
-          {activeSlides.map((slide, idx) => {
-            const isActive = idx === currentIndex;
-            const targetUrl = slide.targetUrl || "/products";
-            const isExternal = targetUrl.startsWith("http://") || targetUrl.startsWith("https://");
+      {/*
+        Mobile  : aspect-[3/4] — portrait, shows full tall saree images without cutting
+        Tablet  : aspect-[4/3]
+        Desktop : fixed 90vh — cinematic full-screen feel
+      */}
+      {/* 
+        Mobile: auto height so image shows at its natural ratio — nothing ever cropped.
+        Desktop: fixed 92vh cinematic view with object-cover.
+      */}
+      <div className="relative w-full md:h-[92vh] md:min-h-[600px]">
 
-            return (
-              <div
-                key={idx}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                  isActive ? "opacity-100 z-10 scale-100" : "opacity-0 z-0 scale-105"
-                } transition-transform duration-1000`}
+        {activeSlides.map((slide, idx) => {
+          const isActive = idx === currentIndex;
+          const targetUrl = slide.targetUrl || "/products";
+          const isExternal = targetUrl.startsWith("http://") || targetUrl.startsWith("https://");
+
+          return (
+            <div
+              key={idx}
+              className={`
+                md:absolute md:inset-0 w-full h-full
+                transition-opacity duration-1000 ease-in-out
+                ${isActive ? "opacity-100 z-10 block" : "opacity-0 z-0 hidden md:block md:pointer-events-none"}
+              `}
+            >
+              <Link
+                href={targetUrl}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="block w-full h-full"
               >
-                <Link
-                  href={targetUrl}
-                  target={isExternal ? "_blank" : undefined}
-                  rel={isExternal ? "noopener noreferrer" : undefined}
-                  className="block w-full h-full cursor-pointer group active:scale-[0.98] transition-transform duration-300 ease-out"
-                >
-                  <picture key={`${slide.imageUrl}-${slide.mobileImageUrl || ""}`} className="block w-full h-full">
-                    {slide.mobileImageUrl && (
-                      <source media="(max-width: 767px)" srcSet={optimizeImage(slide.mobileImageUrl, 800)} />
-                    )}
-                    <img
-                      alt={`Sanskriti Saree Banner ${idx + 1}`}
-                      src={optimizeImage(slide.imageUrl, 1600)}
-                      {...(idx === 0 ? { fetchPriority: "high" } : { loading: "lazy" })}
-                      decoding="async"
-                      className="w-full h-full object-contain md:object-cover object-center md:object-top transition-transform duration-700 group-hover:scale-[1.01]"
-                    />
-                  </picture>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+                <picture className="block w-full h-full">
+                  {slide.mobileImageUrl && (
+                    <source media="(max-width: 767px)" srcSet={optimizeImage(slide.mobileImageUrl, 900)} />
+                  )}
+                  <img
+                    alt={`Sanskriti Sarees Banner ${idx + 1}`}
+                    src={optimizeImage(slide.imageUrl, 1600)}
+                    {...(idx === 0 ? { fetchPriority: "high" } : { loading: "lazy" })}
+                    decoding="async"
+                    className="w-full h-auto md:h-full md:object-cover md:object-top"
+                  />
+                </picture>
+              </Link>
+            </div>
+          );
+        })}
+
+        {/* Dots */}
+        {activeSlides.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+            {activeSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setCurrentIndex(idx); }}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  idx === currentIndex ? "w-6 bg-white" : "w-2 bg-white/50 hover:bg-white/75"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
