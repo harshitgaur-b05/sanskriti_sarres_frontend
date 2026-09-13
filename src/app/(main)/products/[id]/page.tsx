@@ -186,20 +186,42 @@ export default function ProductDetailPage() {
               <button
                 onClick={handleAddToCart}
                 disabled={isOutOfStock}
-                className="flex-1 py-4 bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest rounded-xs hover:bg-tertiary-container transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed font-bold"
+                className="flex-1 py-4 bg-primary text-on-primary font-label-md text-xs uppercase tracking-widest rounded-xs hover:bg-tertiary-container active:scale-[0.98] transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed font-bold"
               >
                 {isOutOfStock ? "Out of Stock" : "Add to Shopping Bag"}
               </button>
               <Link
                 href="/checkout"
-                className="py-4 px-6 border border-outline text-on-surface text-center font-label-md text-xs uppercase tracking-widest rounded-xs hover:bg-surface-container transition-all font-semibold"
+                className="py-4 px-6 border border-outline text-on-surface text-center font-label-md text-xs uppercase tracking-widest rounded-xs hover:bg-surface-container active:scale-[0.98] transition-all font-semibold"
               >
                 Go to Checkout
               </Link>
             </div>
+            
+            {/* Unstitched Disclaimer */}
+            <div className="bg-amber-50/50 border border-amber-200/50 rounded-lg p-3 flex gap-2 items-start mt-4">
+              <span className="material-symbols-outlined text-amber-600 text-sm">info</span>
+              <p className="text-amber-800 text-[10px] uppercase tracking-wider">Note: Saree comes unstitched. We do not provide stitching, fall, or picot services.</p>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Sticky Bottom Add to Cart (Mobile Only) */}
+      {!isOutOfStock && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant/30 p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-40 flex items-center justify-between gap-4 pb-safe">
+          <div className="flex flex-col">
+            <span className="text-[9px] uppercase text-on-surface-variant tracking-wider font-semibold">Price</span>
+            <span className="text-sm font-bold text-on-surface">₹{Number(product.price).toLocaleString("en-IN")}</span>
+          </div>
+          <button
+            onClick={handleAddToCart}
+            className="flex-1 py-3 bg-primary text-on-primary font-label-md text-[11px] uppercase tracking-widest rounded-sm active:scale-[0.98] transition-transform font-bold"
+          >
+            Add to Bag
+          </button>
+        </div>
+      )}
     </div>
   );
 }

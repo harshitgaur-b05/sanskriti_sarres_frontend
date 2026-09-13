@@ -13,8 +13,34 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Sanskriti Sarees Mill | Heritage Editorial",
-  description: "Archival heritage meets modern drape. Discover curated timeless silhouettes.",
+  title: {
+    default: "Sanskriti Sarees Mill | Heritage Editorial",
+    template: "%s | Sanskriti Sarees Mill"
+  },
+  description: "Archival heritage meets modern drape. Discover curated timeless silhouettes and pure silk sarees at Sanskriti Sarees Mill.",
+  keywords: ["Sarees", "Silk Sarees", "Indian Ethnic Wear", "Sanskriti Sarees Mill", "Unstitched Sarees", "Heritage Drape"],
+  openGraph: {
+    title: "Sanskriti Sarees Mill",
+    description: "Archival heritage meets modern drape. Discover curated timeless silhouettes.",
+    url: "https://sanskritisarees.com",
+    siteName: "Sanskriti Sarees Mill",
+    images: [
+      {
+        url: "/logo.png", // Assuming logo is in public dir
+        width: 1200,
+        height: 630,
+        alt: "Sanskriti Sarees Mill Logo",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sanskriti Sarees Mill",
+    description: "Archival heritage meets modern drape. Discover curated timeless silhouettes.",
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({

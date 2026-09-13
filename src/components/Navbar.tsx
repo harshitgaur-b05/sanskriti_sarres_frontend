@@ -2,12 +2,19 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/CartContext";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { totalItems, setCartOpen } = useCart();
+  const pathname = usePathname();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -124,46 +131,48 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-20 left-0 w-full bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/30 py-4 px-margin-mobile flex flex-col gap-4 shadow-xl">
-          <Link
-            href="/"
-            className="font-label-md text-label-md text-on-surface uppercase tracking-widest hover:text-primary transition-colors py-2 border-b border-outline-variant/20"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            href="/products"
-            className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 border-b border-outline-variant/20"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Products
-          </Link>
-          <Link
-            href="/about"
-            className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 border-b border-outline-variant/20"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            About Us
-          </Link>
-          <Link
-            href="/blog"
-            className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 border-b border-outline-variant/20"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Blog
-          </Link>
-          <Link
-            href="/contact"
-            className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Contact Us
-          </Link>
-        </div>
-      )}
+      {/* Mobile Dropdown Menu with Smooth Animation */}
+      <div
+        className={`lg:hidden absolute top-20 left-0 w-full bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile flex flex-col gap-4 shadow-xl overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.2,0.8,0.2,1)] origin-top ${
+          isMobileMenuOpen ? "max-h-[400px] py-4 opacity-100 scale-y-100" : "max-h-0 py-0 opacity-0 scale-y-95 border-transparent"
+        }`}
+      >
+        <Link
+          href="/"
+          className="font-label-md text-label-md text-on-surface uppercase tracking-widest hover:text-primary transition-colors py-2 border-b border-outline-variant/20 active:scale-[0.98]"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link
+          href="/products"
+          className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 border-b border-outline-variant/20 active:scale-[0.98]"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Products
+        </Link>
+        <Link
+          href="/about"
+          className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 border-b border-outline-variant/20 active:scale-[0.98]"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          About Us
+        </Link>
+        <Link
+          href="/blog"
+          className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 border-b border-outline-variant/20 active:scale-[0.98]"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Blog
+        </Link>
+        <Link
+          href="/contact"
+          className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hover:text-on-surface transition-colors py-2 active:scale-[0.98]"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Contact Us
+        </Link>
+      </div>
     </header>
   );
 }

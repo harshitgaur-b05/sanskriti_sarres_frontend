@@ -393,6 +393,15 @@ export default function CheckoutPage() {
           {/* Left Column — Form Fields matching user screenshot */}
           <form onSubmit={handlePayNow} className="lg:col-span-7 space-y-8 bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-xs">
             
+            {/* Disclaimer Banner */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
+              <span className="material-symbols-outlined text-amber-600">info</span>
+              <div>
+                <h4 className="text-amber-900 font-bold text-sm">Unstitched Sarees Only</h4>
+                <p className="text-amber-800 text-xs mt-1">Please note that all sarees are shipped unstitched. We do not provide stitching, fall, or picot services.</p>
+              </div>
+            </div>
+
             {/* Contact Section */}
             <div>
               <div className="flex items-center justify-between mb-3">
