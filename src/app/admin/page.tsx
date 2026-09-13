@@ -61,7 +61,8 @@ export default function AdminPage() {
     showToast("Logged out successfully.");
   };
 
-  // ── Data Fetching ─────────────────────────────────────
+  const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY || "sanskriti-admin-2024";
+
   const fetchProducts = useCallback(async () => {
     setLoadingProducts(true);
     try {
@@ -110,29 +111,27 @@ export default function AdminPage() {
     setLoadingOrders(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/orders`, {
-        headers: { "x-admin-key": process.env.NEXT_PUBLIC_ADMIN_API_KEY || "sanskriti-admin-2024" },
+        headers: { "x-admin-key": ADMIN_KEY },
       });
       if (res.ok) setOrders(await res.json());
+      else console.error("Orders fetch failed:", res.status, await res.text());
     } catch (err) {
       console.error(err);
     } finally {
       setLoadingOrders(false);
     }
-  }, []);
-
-  // Fetch orders immediately on mount (no auth required on this endpoint)
-  // and again whenever isAuthenticated changes
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+  }, [ADMIN_KEY]);
 
   useEffect(() => {
     if (isAuthenticated) {
       fetchProducts();
       fetchHero();
       fetchBlogs();
+      fetchOrders();
     }
-  }, [isAuthenticated, fetchProducts, fetchHero, fetchBlogs]);
+  }, [isAuthenticated, fetchProducts, fetchHero, fetchBlogs, fetchOrders]);
+
+  // Remove the separate mount-time fetch — orders require admin auth
 
   // ── Seed ──────────────────────────────────────────────
   const handleSeedProducts = async () => {
