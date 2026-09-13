@@ -78,7 +78,7 @@ export default function HeroCarousel({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative h-[calc(100vh-80px)] min-h-[500px] w-full flex items-center justify-center">
+      <div className="relative h-[60vh] sm:h-[75vh] md:h-[calc(100vh-80px)] min-h-[360px] md:min-h-[500px] w-full flex items-center justify-center">
         {/* Full Image Background Slides with Clickable Link */}
         <div className="absolute inset-0 w-full h-full">
           {activeSlides.map((slide, idx) => {
