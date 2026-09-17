@@ -20,9 +20,15 @@ interface Product {
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
+const DEFAULT_HERO_SLIDE = {
+  imageUrl: "/hero_banner_website.webp",
+  mobileImageUrl: "/hero_banner_mobile.webp",
+  targetUrl: "/products",
+};
+
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [heroSlides, setHeroSlides] = useState<{ imageUrl: string; mobileImageUrl?: string; targetUrl?: string }[]>([]);
+  const [heroSlides, setHeroSlides] = useState<{ imageUrl: string; mobileImageUrl?: string; targetUrl?: string }[]>([DEFAULT_HERO_SLIDE]);
   const [heroInterval, setHeroInterval] = useState<number>(4000);
   const { addToCart } = useCart();
 
@@ -42,12 +48,21 @@ export default function Home() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
+          let fetchedSlides: { imageUrl: string; mobileImageUrl?: string; targetUrl?: string }[] = [];
           if (Array.isArray(data.slides) && data.slides.length > 0) {
-            setHeroSlides(data.slides);
+            fetchedSlides = data.slides;
           } else if (Array.isArray(data.images) && data.images.length > 0) {
-            setHeroSlides(data.images.map((img: string) => ({ imageUrl: img, targetUrl: "/products" })));
+            fetchedSlides = data.images.map((img: string) => ({ imageUrl: img, targetUrl: "/products" }));
           } else if (data.imageUrl) {
-            setHeroSlides([{ imageUrl: data.imageUrl, targetUrl: "/products" }]);
+            fetchedSlides = [{ imageUrl: data.imageUrl, targetUrl: "/products" }];
+          }
+
+          if (fetchedSlides.length > 0) {
+            // Keep default slide as Slide #1, append backend slides after (excluding duplicates)
+            const additionalSlides = fetchedSlides.filter(
+              (s) => s.imageUrl !== DEFAULT_HERO_SLIDE.imageUrl
+            );
+            setHeroSlides([DEFAULT_HERO_SLIDE, ...additionalSlides]);
           }
           if (typeof data.interval === "number") {
             setHeroInterval(data.interval);

@@ -16,18 +16,24 @@ interface HeroCarouselProps {
   interval?: number;
 }
 
+export const DEFAULT_HERO_SLIDE: HeroSlide = {
+  imageUrl: "/hero_banner_website.webp",
+  mobileImageUrl: "/hero_banner_mobile.webp",
+  targetUrl: "/products",
+};
+
 export default function HeroCarousel({
   slides = [],
   images = [],
   interval = 4000,
 }: HeroCarouselProps) {
-  // Only use what's provided — no hardcoded fallbacks
+  // Use provided slides or fallback to default banner (website + mobile)
   const activeSlides: HeroSlide[] =
     slides.length > 0
       ? slides
       : images.length > 0
       ? images.map((img) => ({ imageUrl: img, targetUrl: "/products" }))
-      : [];
+      : [DEFAULT_HERO_SLIDE];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
