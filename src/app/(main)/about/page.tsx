@@ -56,7 +56,7 @@ export default function AboutPage() {
         <div className="pt-6 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold text-on-surface">Visit or Contact Us:</p>
-            <p className="text-xs text-on-surface-variant">Shahdara, Delhi, 110032 · sanskritisareeemail@gmail.com</p>
+            <p className="text-xs text-on-surface-variant">Shahdara, Delhi, 110093 · sanskritisareeemail@gmail.com</p>
           </div>
           <Link
             href="/products"

@@ -576,7 +576,7 @@ export default function CheckoutPage() {
 
             <div className="bg-white border border-gray-200 rounded-xl p-3 text-[11px] text-gray-600 space-y-1">
               <p><strong>Shop:</strong> Sanskriti Sarees Mill</p>
-              <p><strong>Dispatch:</strong> Shahdara, Delhi - 110032</p>
+              <p><strong>Dispatch:</strong> Shahdara, Delhi - 110093</p>
               <p><strong>Email:</strong> sanskritisareeemail@gmail.com</p>
             </div>
           </div>

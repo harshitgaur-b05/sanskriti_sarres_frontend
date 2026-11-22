@@ -254,7 +254,7 @@ export default function Home() {
               </div>
               <div className="text-left">
                 <h4 className="font-label-md text-[10px] md:text-xs uppercase tracking-widest text-on-surface">Shahdara, Delhi Store</h4>
-                <p className="font-caption text-[9px] md:text-[10px] text-on-surface-variant">D 663, Main 100 Feet Rd, Delhi 110032</p>
+                <p className="font-caption text-[9px] md:text-[10px] text-on-surface-variant">D 663, Main 100 Feet Rd, Delhi 110093</p>
               </div>
             </div>
             <Link href="/about" className="inline-flex items-center gap-2 font-label-md text-xs uppercase tracking-widest text-on-surface hover:text-primary transition-colors">

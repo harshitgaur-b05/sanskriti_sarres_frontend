@@ -14,7 +14,7 @@ export default function Footer() {
           </p>
           <div className="mt-3 text-xs text-on-surface-variant space-y-1">
             <p><strong>Official Email:</strong> <a href="mailto:sanskritisareeemail@gmail.com" className="hover:text-primary underline">sanskritisareeemail@gmail.com</a></p>
-            <p><strong>Address:</strong> D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110032, India</p>
+            <p><strong>Address:</strong> D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110093, India</p>
           </div>
         </div>
         <div>
@@ -48,7 +48,7 @@ export default function Footer() {
             sanskritisareeemail@gmail.com
           </a>
           <p className="text-[11px] text-on-surface-variant/80 mt-3">
-            In-store visits: Shahdara, Delhi - 110032
+            In-store visits: Shahdara, Delhi - 110093
           </p>
         </div>
       </div>

@@ -93,7 +93,7 @@ export default function ShippingPolicyPage() {
           </p>
           <div className="bg-surface-container-low p-4 rounded-lg border border-outline-variant/30 mt-3 text-xs text-on-surface space-y-1">
             <p><strong>Sanskriti Sarees Mill</strong></p>
-            <p>D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110032, India</p>
+            <p>D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110093, India</p>
             <p>Email: <a href="mailto:sanskritisareeemail@gmail.com" className="text-primary underline">sanskritisareeemail@gmail.com</a></p>
           </div>
         </section>

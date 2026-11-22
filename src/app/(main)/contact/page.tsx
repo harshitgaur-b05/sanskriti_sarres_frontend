@@ -37,11 +37,11 @@ export default function ContactPage() {
               <p className="font-semibold text-on-surface">Sanskriti Sarees Mill</p>
               <p>D 663, Main 100 Feet Rd, Chanderlok Colony,</p>
               <p>Durgapuri Extension, Chanderlok,</p>
-              <p>Shahdara, Delhi, 110032, India</p>
+              <p>Shahdara, Delhi, 110093, India</p>
             </div>
             <div className="mt-4">
               <a
-                href="https://maps.google.com/?q=D+663+Main+100+Feet+Rd+Chanderlok+Shahdara+Delhi+110032"
+                href="https://maps.google.com/?q=D+663+Main+100+Feet+Rd+Chanderlok+Shahdara+Delhi+110093"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-semibold text-primary underline underline-offset-4 hover:opacity-80"

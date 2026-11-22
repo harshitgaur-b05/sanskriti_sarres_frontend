@@ -29,7 +29,7 @@ export default function TermsPage() {
           </p>
           <div className="bg-surface-container-low p-4 rounded-lg border border-outline-variant/30 my-3 text-xs text-on-surface">
             <p><strong>Shop Name:</strong> Sanskriti Sarees Mill</p>
-            <p><strong>Location:</strong> D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110032, India</p>
+            <p><strong>Location:</strong> D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110093, India</p>
             <p><strong>Official Email:</strong> <a href="mailto:sanskritisareeemail@gmail.com" className="underline text-primary">sanskritisareeemail@gmail.com</a></p>
           </div>
           <p>
@@ -126,7 +126,7 @@ export default function TermsPage() {
           </p>
           <div className="bg-surface-container-low p-4 rounded-lg border border-outline-variant/30 mt-3 text-xs text-on-surface">
             <p><strong>Sanskriti Sarees Mill</strong></p>
-            <p>D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110032, India</p>
+            <p>D 663, Main 100 Feet Rd, Chanderlok Colony, Durgapuri Extension, Chanderlok, Shahdara, Delhi, 110093, India</p>
             <p>Email: <a href="mailto:sanskritisareeemail@gmail.com" className="underline text-primary">sanskritisareeemail@gmail.com</a></p>
           </div>
         </section>

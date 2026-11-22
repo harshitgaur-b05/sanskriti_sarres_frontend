@@ -363,7 +363,7 @@ export default function ProductDetailPage() {
                 <div className="pt-1">
                   <strong>Sold &amp; Marketed By:</strong><br />
                   Sanskriti Sarees Mill<br />
-                  D 663, Main 100 Feet Rd, Chanderlok Colony, Shahdara, Delhi – 110032, India
+                  D 663, Main 100 Feet Rd, Chanderlok Colony, Shahdara, Delhi – 110093, India
                 </div>
               </div>
             </AccordionItem>
