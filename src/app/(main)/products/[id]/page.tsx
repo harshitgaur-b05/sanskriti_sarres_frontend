@@ -334,32 +334,37 @@ export default function ProductDetailPage() {
           <div className="mt-4 border-t border-outline-variant/20 divide-y divide-outline-variant/20">
             <AccordionItem title="Delivery & Returns">
               <ul className="list-disc list-inside text-xs text-on-surface-variant space-y-1.5 leading-relaxed">
-                <li>Returns accepted within 7 days from receipt of product(s)</li>
-                <li>Refunds processed within 7–15 business days after product(s) reach our warehouse</li>
-                <li>For more details, refer to our <Link href="/refund-policy" className="text-primary underline">Return &amp; Cancellation Policy</Link></li>
-                <li>Products with 50% or more discount are not eligible for return</li>
+                <li>Domestic delivery across India (customer pays standard shipping charges at checkout)</li>
+                <li>Estimated delivery within 3–7 business days post-dispatch</li>
+                <li>Damaged, defective, or incorrect products are fully covered with replacement or refund</li>
+                <li>For complete details, view our <Link href="/shipping-policy" className="text-primary underline">Shipping Policy</Link> and <Link href="/refund-policy" className="text-primary underline">Returns &amp; Refunds Policy</Link></li>
               </ul>
             </AccordionItem>
-            <AccordionItem title="Contact Details">
+            <AccordionItem title="Contact & Store Support">
               <div className="text-xs text-on-surface-variant space-y-2">
-                <p>Feel free to contact our Customer Care team:</p>
+                <p>Reach out to our customer support team for inquiries:</p>
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-sm text-on-surface-variant">call</span>
-                  <span>+91 98765 43210 (Mon–Sat, 10am to 6pm)</span>
+                  <span className="material-symbols-outlined text-sm text-primary">mail</span>
+                  <a href="mailto:sanskritisareeemail@gmail.com" className="text-primary underline">
+                    sanskritisareeemail@gmail.com
+                  </a>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-sm text-on-surface-variant">mail</span>
-                  <span>support@sanskritimill.com</span>
+                <div className="flex items-start gap-2 pt-1">
+                  <span className="material-symbols-outlined text-sm text-on-surface-variant">store</span>
+                  <span>D 663, Main 100 Feet Rd, Shahdara, Delhi, 110032, India</span>
                 </div>
               </div>
             </AccordionItem>
-            <AccordionItem title="More">
+            <AccordionItem title="Product & Seller Details">
               <div className="text-xs text-on-surface-variant space-y-1 leading-relaxed">
                 <div><strong>Country of Origin:</strong> India</div>
-                <div><strong>Craft:</strong> Traditional Varanasi / Handloom Weave</div>
+                <div><strong>Item Type:</strong> Traditional Unstitched Saree Drape</div>
                 <div><strong>Blouse Piece:</strong> Included (Unstitched)</div>
-                <div><strong>Guarantee:</strong> Silk Mark Verified</div>
-                <div className="pt-1"><strong>Manufactured & Marketed By:</strong><br />Sanskriti Sarees Mill, Varanasi, Uttar Pradesh – 221001</div>
+                <div className="pt-1">
+                  <strong>Sold &amp; Marketed By:</strong><br />
+                  Sanskriti Sarees Mill<br />
+                  D 663, Main 100 Feet Rd, Chanderlok Colony, Shahdara, Delhi – 110032, India
+                </div>
               </div>
             </AccordionItem>
           </div>

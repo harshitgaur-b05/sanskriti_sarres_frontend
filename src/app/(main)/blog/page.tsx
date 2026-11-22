@@ -25,7 +25,7 @@ const defaultPosts = [
     id: "2",
     title: "Reviving the Kadhuwa Brocade",
     createdAt: "September 28, 2025",
-    content: "How our master weavers are bringing back the three-dimensional, hand-engraved motifs of ancient Varanasi.",
+    content: "An appreciation of traditional Kadhuwa weaving and the three-dimensional embossed motifs found in classic brocade sarees.",
     image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800"
   },
   {

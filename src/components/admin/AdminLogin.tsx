@@ -25,9 +25,9 @@ export default function AdminLogin({ onLogin, error }: Props) {
       <div className="w-full max-w-md bg-neutral-900 border border-amber-900/30 rounded-3xl p-8 shadow-2xl relative z-10">
         {/* Logo & Header */}
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Sanskriti Sarees Mill Logo" className="w-16 h-16 object-contain mx-auto mb-4" />
+          <img src="/logo_sanskriti.webp" alt="Sanskriti Sarees Mill Logo" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h1 className="text-2xl font-serif font-bold text-amber-200 tracking-wide">
-            Sanskriti Sarees
+            Sanskriti Sarees Mill
           </h1>
           <p className="text-xs text-neutral-400 mt-1 uppercase tracking-widest font-mono">
             Secure Admin Gateway
@@ -73,17 +73,11 @@ export default function AdminLogin({ onLogin, error }: Props) {
 
           <button
             type="submit"
-            className="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white rounded-xl font-semibold text-sm shadow-lg shadow-amber-950/50 transition-all mt-2"
+            className="w-full py-4 mt-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-neutral-950 font-semibold text-sm rounded-xl transition-all shadow-lg shadow-amber-950/40 cursor-pointer active:scale-[0.98]"
           >
-            Unlock Admin Portal
+            Authenticate Access
           </button>
         </form>
-
-        <p className="text-center text-[11px] text-neutral-500 mt-6">
-          Default credentials:{" "}
-          <code className="text-amber-400">admin@sanskriti.com</code> /{" "}
-          <code className="text-amber-400">admin123</code>
-        </p>
       </div>
     </div>
   );

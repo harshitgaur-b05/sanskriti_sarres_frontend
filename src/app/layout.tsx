@@ -13,20 +13,31 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sanskriti-sarres-frontend.vercel.app"),
   title: {
-    default: "Sanskriti Sarees Mill | Heritage Editorial",
-    template: "%s | Sanskriti Sarees Mill"
+    default: "Sanskriti Sarees Mill | Traditional & Bridal Sarees",
+    template: "%s | Sanskriti Sarees Mill",
   },
-  description: "Archival heritage meets modern drape. Discover curated timeless silhouettes and pure silk sarees at Sanskriti Sarees Mill.",
-  keywords: ["Sarees", "Silk Sarees", "Indian Ethnic Wear", "Sanskriti Sarees Mill", "Unstitched Sarees", "Heritage Drape"],
+  description:
+    "Sanskriti Sarees Mill is a local saree retail shop based in Shahdara, Delhi. Discover curated traditional sarees, bridal collections, and ethnic drapes.",
+  keywords: [
+    "Sanskriti Sarees Mill",
+    "Sarees Delhi",
+    "Shahdara Saree Shop",
+    "Silk Sarees",
+    "Bridal Sarees",
+    "Indian Ethnic Wear",
+    "Unstitched Sarees",
+  ],
   openGraph: {
-    title: "Sanskriti Sarees Mill",
-    description: "Archival heritage meets modern drape. Discover curated timeless silhouettes.",
-    url: "https://sanskritisarees.com",
+    title: "Sanskriti Sarees Mill | Shahdara, Delhi",
+    description:
+      "Local saree retail shop based in Shahdara, Delhi offering curated traditional and bridal sarees.",
+    url: "https://sanskriti-sarres-frontend.vercel.app",
     siteName: "Sanskriti Sarees Mill",
     images: [
       {
-        url: "/logo.png", // Assuming logo is in public dir
+        url: "/logo_sanskriti.webp",
         width: 1200,
         height: 630,
         alt: "Sanskriti Sarees Mill Logo",
@@ -38,8 +49,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sanskriti Sarees Mill",
-    description: "Archival heritage meets modern drape. Discover curated timeless silhouettes.",
-    images: ["/logo.png"],
+    description:
+      "Local saree retail shop based in Shahdara, Delhi offering curated traditional and bridal sarees.",
+    images: ["/logo_sanskriti.webp"],
   },
 };
 

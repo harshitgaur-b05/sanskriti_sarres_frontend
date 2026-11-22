@@ -119,7 +119,7 @@ export default function CartDrawer() {
               </span>
             </div>
             <p className="text-[10px] text-on-surface-variant">
-              Taxes & shipping calculated at checkout
+              Delivery charges are paid by the customer and confirmed by the shop owner prior to dispatch.
             </p>
             <Link
               href="/checkout"

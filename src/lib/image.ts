@@ -1,21 +1,24 @@
 /**
- * Optimizes Cloudinary and Unsplash image URLs to load much faster.
- * - For Cloudinary: injects `q_auto,f_auto` to serve compressed WebP/AVIF formats automatically.
- * - For Unsplash: injects `q=80&w=1200&fm=webp` if not already present.
+ * Optimizes Cloudinary, Google, and Unsplash image URLs for fast web delivery.
+ * - Cloudinary: Injects `f_auto,q_auto,c_limit,dpr_auto` (automatic modern formats WebP/AVIF, auto quality compression).
+ * - Unsplash: Injects `auto=format&q=80&w={width}&fm=webp`.
  */
 export function optimizeImage(url?: string, width: number = 1200): string {
   if (!url) return "";
-  
+
   try {
     // 1. Handle Cloudinary
-    // Example: https://res.cloudinary.com/dz.../image/upload/v12345/folder/image.jpg
+    // Example: https://res.cloudinary.com/<cloud>/image/upload/v12345/folder/image.jpg
     if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
-      // If it already has transformations (like q_auto), return as is
-      if (url.includes("q_auto") || url.includes("f_auto")) {
+      // If already has f_auto and q_auto transformations, return as is
+      if (url.includes("f_auto") && url.includes("q_auto")) {
         return url;
       }
-      // Inject auto-format, auto-quality, and max width immediately after /upload/
-      return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width},c_limit/`);
+      // Inject f_auto (fetch format), q_auto (quality auto), dpr_auto, and width limit
+      return url.replace(
+        "/upload/",
+        `/upload/f_auto,q_auto,w_${width},c_limit,dpr_auto/`
+      );
     }
 
     // 2. Handle Unsplash
@@ -26,11 +29,18 @@ export function optimizeImage(url?: string, width: number = 1200): string {
       urlObj.searchParams.set("w", width.toString());
       return urlObj.toString();
     }
+
+    // 3. Handle Google user content / Aida public images
+    if (url.includes("lh3.googleusercontent.com")) {
+      // Append size parameter if not present
+      if (!url.includes("=s") && !url.includes("=w")) {
+        return `${url}=w${width}-rw`;
+      }
+      return url;
+    }
   } catch (e) {
-    // Fallback if URL parsing fails
     return url;
   }
 
-  // 3. Fallback for all other URLs
   return url;
 }

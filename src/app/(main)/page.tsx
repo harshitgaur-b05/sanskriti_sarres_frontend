@@ -242,23 +242,23 @@ export default function Home() {
       {/* About Us Section */}
       <section className="py-12 md:py-16 lg:py-24 bg-surface-container-lowest border-t border-outline-variant/20 px-margin-mobile md:px-margin-desktop" id="about">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="font-label-md text-[10px] md:text-xs uppercase tracking-[0.25em] text-on-surface-variant block mb-4">The Mill Story</span>
-          <h2 className="font-headline-md md:font-headline-lg text-2xl md:text-headline-lg text-on-surface mb-6">Preserving Generational Weaves</h2>
+          <span className="font-label-md text-[10px] md:text-xs uppercase tracking-[0.25em] text-on-surface-variant block mb-4">About Sanskriti Sarees Mill</span>
+          <h2 className="font-headline-md md:font-headline-lg text-2xl md:text-headline-lg text-on-surface mb-6">Local Saree Retail Shop in Shahdara, Delhi</h2>
           <p className="font-body-md md:font-body-lg text-sm md:text-body-lg text-on-surface-variant mb-10 leading-relaxed">
-            For decades, Sankriti Sarees Mill has worked alongside the master artisans of Varanasi to revive and sustain the intricate art of handloom weaving. We bypass intermediaries to bring museum-grade archival textiles directly to you, ensuring fair wages for weavers and authentic, uncompromised quality for every drape.
+            Located on Main 100 Feet Road, Shahdara, Delhi, Sanskriti Sarees Mill curates traditional drapes, bridal collections, and festive ethnic sarees. We are committed to honest pricing, quality fabric selection, and transparent customer service for saree enthusiasts across India.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <div className="flex items-center gap-4 bg-surface-container-low px-6 py-4 rounded-full w-full sm:w-auto">
               <div className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0">
-                <span className="material-symbols-outlined text-xl">texture</span>
+                <span className="material-symbols-outlined text-xl">storefront</span>
               </div>
               <div className="text-left">
-                <h4 className="font-label-md text-[10px] md:text-xs uppercase tracking-widest text-on-surface">Tactile Weave Guarantee</h4>
-                <p className="font-caption text-[9px] md:text-[10px] text-on-surface-variant">Certified Silk Mark verification</p>
+                <h4 className="font-label-md text-[10px] md:text-xs uppercase tracking-widest text-on-surface">Shahdara, Delhi Store</h4>
+                <p className="font-caption text-[9px] md:text-[10px] text-on-surface-variant">D 663, Main 100 Feet Rd, Delhi 110032</p>
               </div>
             </div>
             <Link href="/about" className="inline-flex items-center gap-2 font-label-md text-xs uppercase tracking-widest text-on-surface hover:text-primary transition-colors">
-              <span>Read Our Weave Standard</span>
+              <span>Learn More About Us</span>
               <span className="material-symbols-outlined text-sm">open_in_new</span>
             </Link>
           </div>

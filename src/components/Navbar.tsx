@@ -46,7 +46,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <img
-              src="/logo.png"
+              src="/logo_sanskriti.webp"
               alt="Sanskriti Sarees Mill Logo"
               className="h-10 md:h-11 w-auto object-contain transition-transform group-hover:scale-105"
             />
@@ -92,19 +92,13 @@ export default function Navbar() {
 
         {/* Action Icons */}
         <div className="flex items-center gap-4 lg:gap-6">
-          <button
-            aria-label="Search"
-            className="text-on-surface-variant hover:text-on-surface transition-colors"
+          <Link
+            href="/products"
+            aria-label="Search Catalog"
+            className="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"
           >
             <span className="material-symbols-outlined">search</span>
-          </button>
-
-          <button
-            aria-label="Favorites"
-            className="text-on-surface-variant hover:text-on-surface transition-colors hidden sm:block"
-          >
-            <span className="material-symbols-outlined">favorite</span>
-          </button>
+          </Link>
 
           {/* Cart Button */}
           <button
@@ -119,12 +113,10 @@ export default function Navbar() {
               </span>
             )}
           </button>
-
-
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu with Smooth Animation */}
+      {/* Mobile Dropdown Menu */}
       <div
         className={`lg:hidden absolute top-20 left-0 w-full bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/30 px-margin-mobile flex flex-col gap-4 shadow-xl overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.2,0.8,0.2,1)] origin-top ${
           isMobileMenuOpen ? "max-h-[400px] py-4 opacity-100 scale-y-100" : "max-h-0 py-0 opacity-0 scale-y-95 border-transparent"
