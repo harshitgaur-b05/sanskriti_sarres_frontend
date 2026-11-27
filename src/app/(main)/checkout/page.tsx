@@ -26,6 +26,7 @@ interface RazorpayOptions {
 
 interface RazorpayInstance {
   open(): void;
+  on(event: string, handler: (response: any) => void): void;
 }
 
 interface RazorpayPaymentResponse {
@@ -112,7 +113,14 @@ export default function CheckoutPage() {
       const verifyRes = await fetch(`${BACKEND_URL}/api/orders/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ razorpayOrderId, razorpayPaymentId, razorpaySignature }),
+        body: JSON.stringify({
+          razorpayOrderId,
+          razorpayPaymentId,
+          razorpaySignature,
+          order_id: razorpayOrderId,
+          payment_id: razorpayPaymentId,
+          signature: razorpaySignature,
+        }),
       });
       const data = await verifyRes.json();
       if (data.success || data.order) {
@@ -211,7 +219,7 @@ export default function CheckoutPage() {
         currency: orderData.currency || "INR",
         name: "Sanskriti Sarees Mill",
         description: `Order ${orderData.orderNumber} (${totalItems} items)`,
-        order_id: orderData.orderId,
+        order_id: orderData.order_id || orderData.orderId,
         prefill: {
           name: fullCustomerName,
           email: form.email,
@@ -232,6 +240,13 @@ export default function CheckoutPage() {
             setStatus("idle");
           },
         },
+      });
+
+      // Handle payment failure event
+      rzp.on("payment.failed", function (response: any) {
+        console.error("Razorpay Payment Failed:", response.error);
+        setErrorMsg(`Payment failed: ${response.error?.description || response.error?.reason || "Transaction declined"}`);
+        setStatus("failed");
       });
 
       rzp.open();
